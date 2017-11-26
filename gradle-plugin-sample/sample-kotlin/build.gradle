@@ -1,0 +1,11 @@
+apply plugin: 'kotlin'
+apply plugin: 'com.minyushov.bintray'
+
+bintrayUpload {
+  repo = "test"
+  groupId = "com.minyushov.test"
+  artifactId = "test"
+  version = "1.0"
+  vcsUrl = "https://github.com/minyushov/test"
+  license = "Apache-2.0"
+}

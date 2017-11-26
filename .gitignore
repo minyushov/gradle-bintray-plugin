@@ -1,0 +1,10 @@
+.gradle
+gradle-plugin-sample/build
+*.iml
+local.properties
+gradle-plugin-sample/sample-java/build
+gradle-plugin-sample/sample-java/out
+gradle-plugin-sample/sample-kotlin/build
+gradle-plugin-sample/sample-kotlin/out
+gradle-plugin/build
+gradle-plugin/out

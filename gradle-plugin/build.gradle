@@ -1,0 +1,60 @@
+buildscript {
+  apply from: "../versions.gradle"
+
+  repositories {
+    jcenter()
+    google()
+    maven { url 'https://dl.bintray.com/minyushov/gradle' }
+  }
+
+  dependencies {
+    classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
+    classpath "com.minyushov.gradle:bintray-simple:0.0.2"
+  }
+}
+
+apply plugin: 'java-gradle-plugin'
+apply plugin: 'kotlin'
+apply plugin: 'bintray-simple'
+
+repositories {
+  jcenter()
+  google()
+}
+
+dependencies {
+  implementation gradleApi()
+
+  implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlinVersion"
+  implementation "org.jetbrains.kotlin:kotlin-runtime:$kotlinVersion"
+
+  implementation "com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.0"
+  implementation "digital.wup:android-maven-publish:3.1.1"
+  implementation "org.jetbrains.dokka:dokka-gradle-plugin:0.9.15"
+  implementation "org.jetbrains.dokka:dokka-android-gradle-plugin:0.9.15"
+  implementation "com.android.tools.build:gradle:3.0.1"
+}
+
+group = 'com.minyushov.gradle'
+version = '1.0.0'
+
+gradlePlugin {
+  plugins {
+    customPlugin {
+      id = 'com.minyushov.bintray'
+      implementationClass = 'com.minyushov.bintray.BintrayPlugin'
+    }
+  }
+}
+
+bintrayUpload {
+  dryRun = false
+  repo = "gradle"
+  groupId = "com.minyushov.gradle"
+  artifactId = "bintray"
+  version = "1.0.0"
+  vcsUrl = "https://github.com/minyushov/bintray-simple"
+  license = "Apache-2.0"
+  sources = false
+  docs = false
+}
