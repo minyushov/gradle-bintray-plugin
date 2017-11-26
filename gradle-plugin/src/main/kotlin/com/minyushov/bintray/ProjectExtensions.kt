@@ -17,13 +17,6 @@ private const val PROPERTIES_NAME = "local.properties"
 
 internal fun Project.configure(extension: BintraySimpleExtension) {
   getType().run {
-    project.configurations.apply {
-      if (findByName(BintrayPlugin.DOCUMENTATION_CONFIGURATION) != null) {
-        throw GradleException("Configuration '${BintrayPlugin.DOCUMENTATION_CONFIGURATION}' is already defined")
-      }
-      create(BintrayPlugin.DOCUMENTATION_CONFIGURATION)
-    }
-
     pluginsConfigurators.forEach { it.configure(project) }
 
     extension.version?.let { project.setProperty("version", it) }

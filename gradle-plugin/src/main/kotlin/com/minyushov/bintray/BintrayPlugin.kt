@@ -13,8 +13,11 @@ class BintrayPlugin : Plugin<Project> {
   override fun apply(project: Project) {
     val extension = project.extensions.create(EXTENSION_NAME, BintraySimpleExtension::class.java, project)
 
-    project.beforeEvaluate {
-      project.repositories.google()
+    project.configurations.apply {
+      if (findByName(BintrayPlugin.DOCUMENTATION_CONFIGURATION) != null) {
+        throw GradleException("Configuration '${BintrayPlugin.DOCUMENTATION_CONFIGURATION}' is already defined")
+      }
+      create(BintrayPlugin.DOCUMENTATION_CONFIGURATION)
     }
 
     project.afterEvaluate {
