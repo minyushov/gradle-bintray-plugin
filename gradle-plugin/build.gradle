@@ -9,13 +9,13 @@ buildscript {
 
   dependencies {
     classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
-    classpath "com.minyushov.gradle:bintray-simple:0.0.2"
+    classpath "com.minyushov.gradle:bintray:1.0.0"
   }
 }
 
 apply plugin: 'java-gradle-plugin'
 apply plugin: 'kotlin'
-apply plugin: 'bintray-simple'
+apply plugin: 'com.minyushov.bintray'
 
 repositories {
   jcenter()
