@@ -1,8 +1,6 @@
 package com.minyushov.bintray
 
-import org.gradle.api.Project
-
-open class BintraySimpleExtension(private val project: Project) {
+open class BintraySimpleExtension {
   var user: String? = null
   var key: String? = null
   var organization: String? = null
