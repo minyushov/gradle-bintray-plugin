@@ -7,34 +7,40 @@ import org.gradle.api.Task
 import org.gradle.api.publish.maven.MavenPublication
 import org.gradle.api.tasks.bundling.Jar
 import org.gradle.api.tasks.javadoc.Javadoc
+import org.gradle.external.javadoc.StandardJavadocDocletOptions
 import org.jetbrains.dokka.gradle.DokkaTask
 import java.io.File
 
 internal abstract class ArtifactDocumentation : Artifact {
   override fun apply(project: Project, extension: BintraySimpleExtension, publication: MavenPublication) {
     if (extension.docs) {
-      apply(project, publication)
+      configure(project, extension, publication)
     }
   }
 
-  abstract fun apply(project: Project, publication: MavenPublication)
+  abstract fun configure(project: Project, extension: BintraySimpleExtension, publication: MavenPublication)
 }
 
 internal class ArtifactJavaDoc : ArtifactDocumentation() {
-  override fun apply(project: Project, publication: MavenPublication) {
+  override fun configure(project: Project, extension: BintraySimpleExtension, publication: MavenPublication) {
     val javadocTask = project.tasks.findByName("javadoc") as? Javadoc
         ?: throw GradleException("Unable to find 'javadoc' task")
 
+    extension
+      .docsSettings
+      ?.apply { delegate = javadocTask }
+      ?.call()
+
     val task = project.task(
-        mapOf(
-            Task.TASK_TYPE to Jar::class.java,
-            Task.TASK_DEPENDS_ON to javadocTask
-        ),
-        "javadocJar",
-        project.closureOf<Jar> {
-          classifier = "javadoc"
-          from(javadocTask.destinationDir)
-        }
+      mapOf(
+        Task.TASK_TYPE to Jar::class.java,
+        Task.TASK_DEPENDS_ON to javadocTask
+      ),
+      "javadocJar",
+      project.closureOf<Jar> {
+        classifier = "javadoc"
+        from(javadocTask.destinationDir)
+      }
     )
 
     publication.artifact(task)
@@ -42,7 +48,7 @@ internal class ArtifactJavaDoc : ArtifactDocumentation() {
 }
 
 internal class ArtifactAndroidDoc : ArtifactDocumentation() {
-  override fun apply(project: Project, publication: MavenPublication) {
+  override fun configure(project: Project, extension: BintraySimpleExtension, publication: MavenPublication) {
     val android = project.extensions.getByType(LibraryExtension::class.java)
         ?: throw GradleException("Unable to find 'android' extension")
 
@@ -50,27 +56,32 @@ internal class ArtifactAndroidDoc : ArtifactDocumentation() {
         ?: throw GradleException("Unable to find 'main' source set")
 
     val androidJavadocs = project.task(
-        mapOf(
-            Task.TASK_TYPE to Javadoc::class.java
-        ),
-        "androidJavadocs",
-        project.closureOf<Javadoc> {
-          source(sourceSet.java.sourceFiles)
-          classpath += project.files(android.bootClasspath.joinToString(File.pathSeparator))
-          classpath += project.configurations.getByName(BintrayPlugin.DOCUMENTATION_CONFIGURATION)
-        }
+      mapOf(
+        Task.TASK_TYPE to Javadoc::class.java
+      ),
+      "androidJavadocs",
+      project.closureOf<Javadoc> {
+        source(sourceSet.java.sourceFiles)
+        classpath += project.files(android.bootClasspath.joinToString(File.pathSeparator))
+        classpath += project.configurations.getByName(BintrayPlugin.DOCUMENTATION_CONFIGURATION)
+      }
     ) as Javadoc
 
+    extension
+      .docsSettings
+      ?.apply { delegate = androidJavadocs }
+      ?.call()
+
     val task = project.task(
-        mapOf(
-            Task.TASK_TYPE to Jar::class.java,
-            Task.TASK_DEPENDS_ON to androidJavadocs
-        ),
-        "javadocJar",
-        project.closureOf<Jar> {
-          classifier = "javadoc"
-          from(androidJavadocs.destinationDir)
-        }
+      mapOf(
+        Task.TASK_TYPE to Jar::class.java,
+        Task.TASK_DEPENDS_ON to androidJavadocs
+      ),
+      "javadocJar",
+      project.closureOf<Jar> {
+        classifier = "javadoc"
+        from(androidJavadocs.destinationDir)
+      }
     )
 
     publication.artifact(task)
@@ -78,22 +89,27 @@ internal class ArtifactAndroidDoc : ArtifactDocumentation() {
 }
 
 internal class ArtifactKotlinDoc : ArtifactDocumentation() {
-  override fun apply(project: Project, publication: MavenPublication) {
+  override fun configure(project: Project, extension: BintraySimpleExtension, publication: MavenPublication) {
     val dokka = project.tasks.findByName("dokka") as? DokkaTask
         ?: throw GradleException("Unable to find 'dokka' task")
 
     dokka.outputFormat = "javadoc"
 
+    extension
+      .docsSettings
+      ?.apply { delegate = dokka }
+      ?.call()
+
     val task = project.task(
-        mapOf(
-            Task.TASK_TYPE to Jar::class.java,
-            Task.TASK_DEPENDS_ON to dokka
-        ),
-        "javadocJar",
-        project.closureOf<Jar> {
-          classifier = "javadoc"
-          from(dokka.outputDirectory)
-        }
+      mapOf(
+        Task.TASK_TYPE to Jar::class.java,
+        Task.TASK_DEPENDS_ON to dokka
+      ),
+      "javadocJar",
+      project.closureOf<Jar> {
+        classifier = "javadoc"
+        from(dokka.outputDirectory)
+      }
     )
 
     publication.artifact(task)

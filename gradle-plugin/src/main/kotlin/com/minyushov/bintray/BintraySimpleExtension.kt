@@ -1,6 +1,10 @@
 package com.minyushov.bintray
 
-open class BintraySimpleExtension {
+import groovy.lang.Closure
+import org.gradle.api.Project
+
+open class BintraySimpleExtension(val project: Project) {
+  var dryRun: Boolean = true
   var user: String? = null
   var key: String? = null
   var organization: String? = null
@@ -12,5 +16,5 @@ open class BintraySimpleExtension {
   var license: String? = null
   var sources: Boolean = true
   var docs: Boolean = true
-  var dryRun: Boolean = true
+  var docsSettings: Closure<*>? = null
 }

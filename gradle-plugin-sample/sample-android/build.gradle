@@ -13,7 +13,7 @@ apply plugin: 'com.minyushov.bintray'
 
 android {
 	compileSdkVersion 27
-	buildToolsVersion "27.0.1"
+	buildToolsVersion "27.0.3"
 
 	defaultConfig {
 		minSdkVersion 27
@@ -31,6 +31,7 @@ dependencies {
 }
 
 bintrayUpload {
+	dryRun = true
 	repo = "test"
 	groupId = "com.minyushov.test"
 	artifactId = "test"
