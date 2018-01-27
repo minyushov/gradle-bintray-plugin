@@ -1,7 +1,12 @@
-apply plugin: 'kotlin'
-apply plugin: 'com.minyushov.bintray'
+plugins {
+  id 'com.minyushov.bintray' version '1.0.1'
+  id 'java-library'
+}
 
 bintrayUpload {
+  dryRun = true
+  user = "test"
+  key = "test"
   repo = "test"
   groupId = "com.minyushov.test"
   artifactId = "test"

@@ -1,5 +1,5 @@
 buildscript {
-  apply from: "../versions.gradle"
+  apply from: "versions.gradle"
 
   repositories {
     jcenter()
@@ -33,6 +33,9 @@ dependencies {
   implementation "org.jetbrains.dokka:dokka-gradle-plugin:0.9.15"
   implementation "org.jetbrains.dokka:dokka-android-gradle-plugin:0.9.15"
   implementation "com.android.tools.build:gradle:3.0.1"
+
+  testImplementation gradleTestKit()
+  testImplementation "junit:junit:4.12"
 }
 
 group = 'com.minyushov.gradle'

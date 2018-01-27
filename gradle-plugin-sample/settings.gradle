@@ -1,4 +1,0 @@
-includeBuild '../gradle-plugin'
-include 'sample-java'
-include 'sample-android'
-include 'sample-kotlin'
