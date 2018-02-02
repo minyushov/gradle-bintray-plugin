@@ -2,7 +2,6 @@ import org.apache.commons.io.FileUtils
 import org.gradle.testkit.runner.GradleRunner
 import org.gradle.testkit.runner.TaskOutcome
 import org.junit.Assert.assertEquals
-import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TemporaryFolder
@@ -13,12 +12,6 @@ class BuildConfigurationTest {
   @Rule
   @JvmField
   val projectDir = TemporaryFolder()
-
-  private lateinit var buildFile: File
-
-  @Before
-  fun setup() {
-  }
 
   @Test
   fun testEmpty() {
