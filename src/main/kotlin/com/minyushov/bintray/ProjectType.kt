@@ -8,15 +8,15 @@ internal sealed class ProjectType {
   internal class JavaProject : ProjectType() {
     override val pluginsConfigurators by lazy {
       listOf(
-          PluginsConfiguratorCommon()
+        PluginsConfiguratorCommon()
       )
     }
 
     override val artifacts: List<Artifact> by lazy {
       listOf(
-          ArtifactMainJava(),
-          ArtifactJavaDoc(),
-          ArtifactJavaSources()
+        ArtifactMainJava(),
+        ArtifactJavaDoc(),
+        ArtifactJavaSources()
       )
     }
   }
@@ -24,16 +24,16 @@ internal sealed class ProjectType {
   internal class JavaAndroidProject : ProjectType() {
     override val pluginsConfigurators by lazy {
       listOf(
-          PluginsConfiguratorCommon(),
-          PluginsConfiguratorAndroid()
+        PluginsConfiguratorCommon(),
+        PluginsConfiguratorAndroid()
       )
     }
 
     override val artifacts: List<Artifact> by lazy {
       listOf(
-          ArtifactMainAndroid(),
-          ArtifactAndroidDoc(),
-          ArtifactAndroidSources()
+        ArtifactMainAndroid(),
+        ArtifactAndroidDoc(),
+        ArtifactAndroidSources()
       )
     }
   }
@@ -41,16 +41,16 @@ internal sealed class ProjectType {
   internal class KotlinProject : ProjectType() {
     override val pluginsConfigurators by lazy {
       listOf(
-          PluginsConfiguratorCommon(),
-          PluginsConfiguratorKotlin()
+        PluginsConfiguratorCommon(),
+        PluginsConfiguratorKotlin()
       )
     }
 
     override val artifacts: List<Artifact> by lazy {
       listOf(
-          ArtifactMainJava(),
-          ArtifactKotlinDoc(),
-          ArtifactJavaSources()
+        ArtifactMainJava(),
+        ArtifactKotlinDoc(),
+        ArtifactJavaSources()
       )
     }
   }
@@ -58,17 +58,17 @@ internal sealed class ProjectType {
   internal class KotlinAndroidProject : ProjectType() {
     override val pluginsConfigurators by lazy {
       listOf(
-          PluginsConfiguratorCommon(),
-          PluginsConfiguratorAndroid(),
-          PluginsConfiguratorKotlinAndroid()
+        PluginsConfiguratorCommon(),
+        PluginsConfiguratorAndroid(),
+        PluginsConfiguratorKotlinAndroid()
       )
     }
 
     override val artifacts: List<Artifact> by lazy {
       listOf(
-          ArtifactMainAndroid(),
-          ArtifactKotlinDoc(),
-          ArtifactAndroidSources()
+        ArtifactMainAndroid(),
+        ArtifactKotlinDoc(),
+        ArtifactAndroidSources()
       )
     }
   }
