@@ -38,7 +38,7 @@ dependencies {
 }
 
 group = 'com.minyushov.gradle'
-version = '1.0.1'
+version = '1.0.2'
 
 gradlePlugin {
   plugins {
@@ -54,7 +54,7 @@ bintrayUpload {
   repo = "gradle"
   groupId = "com.minyushov.gradle"
   artifactId = "bintray"
-  version = "1.0.1"
+  version = "1.0.2"
   vcsUrl = "https://github.com/minyushov/gradle-bintray-plugin.git"
   license = "Apache-2.0"
   sources = false
