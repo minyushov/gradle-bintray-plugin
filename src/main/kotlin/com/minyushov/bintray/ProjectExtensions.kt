@@ -17,31 +17,33 @@ private const val PLUGIN_ANDROID_LIBRARY = "com.android.library"
 private const val PROPERTIES_NAME = "local.properties"
 
 internal fun Project.configure(extension: BintraySimpleExtension) {
-  getType().run {
-    pluginsConfigurators.forEach { it.configure(project) }
+  getType()
+    .takeIf { it !is ProjectType.UnknownProject }
+    ?.run {
+      pluginsConfigurators.forEach { it.configure(project) }
 
-    extension.version?.let { project.setProperty("version", it) }
-    extension.groupId?.let { project.setProperty("group", it) }
-    extension.artifactId?.let { project.setProperty("archivesBaseName", it) }
+      extension.version?.let { project.setProperty("version", it) }
+      extension.groupId?.let { project.setProperty("group", it) }
+      extension.artifactId?.let { project.setProperty("archivesBaseName", it) }
 
-    val publishing = project.extensions.getByType(PublishingExtension::class.java)
-        ?: throw GradleException("Unable to find publishing extension")
+      val publishing = project.extensions.getByType(PublishingExtension::class.java)
+          ?: throw GradleException("Unable to find publishing extension")
 
-    publishing.publications.create("maven", MavenPublication::class.java) { publication ->
+      publishing.publications.create("maven", MavenPublication::class.java) { publication ->
 
-      publication.apply {
-        artifactId = extension.artifactId
-        groupId = extension.groupId
-        version = extension.version
+        publication.apply {
+          artifactId = extension.artifactId
+          groupId = extension.groupId
+          version = extension.version
+        }
+
+        artifacts.forEach {
+          it.apply(project, extension, publication)
+        }
+
+        bintrayConfigurator.configure(project, extension, publication)
       }
-
-      artifacts.forEach {
-        it.apply(project, extension, publication)
-      }
-
-      bintrayConfigurator.configure(project, extension, publication)
     }
-  }
 }
 
 private fun Project.getType() =

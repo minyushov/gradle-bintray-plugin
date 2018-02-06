@@ -1,0 +1,15 @@
+plugins {
+  id 'com.minyushov.bintray' version '1.0.2'
+}
+
+bintrayUpload {
+  dryRun = true
+  user = "test"
+  key = "test"
+  repo = "test"
+  groupId = "com.minyushov.test"
+  artifactId = "test"
+  version = "1.0"
+  vcsUrl = "https://github.com/minyushov/test"
+  license = "Apache-2.0"
+}

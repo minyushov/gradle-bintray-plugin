@@ -30,6 +30,23 @@ class BuildConfigurationTest {
   }
 
   @Test
+  fun testNotSupported() {
+    javaClass
+      .getResourceAsStream("not-supported.gradle")
+      .copyTo(projectDir.newFile("build.gradle"))
+      .let {
+        GradleRunner.create()
+          .withProjectDir(projectDir.root)
+          .withArguments("bintrayUpload")
+          .withPluginClasspath()
+          .buildAndFail()
+      }
+      .apply {
+        assert(output.contains("Task 'bintrayUpload' not found"))
+      }
+  }
+
+  @Test
   fun testJava() {
     javaClass
       .getResourceAsStream("java.gradle")
@@ -44,7 +61,6 @@ class BuildConfigurationTest {
       .apply {
         assertEquals(TaskOutcome.SUCCESS, task(":bintrayUpload")?.outcome)
       }
-
   }
 
   private fun InputStream.copyTo(destination: File): File {
