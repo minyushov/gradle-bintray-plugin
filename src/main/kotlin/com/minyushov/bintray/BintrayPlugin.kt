@@ -7,18 +7,10 @@ import org.gradle.api.Project
 class BintrayPlugin : Plugin<Project> {
   companion object {
     private const val EXTENSION_NAME = "bintrayUpload"
-    internal const val DOCUMENTATION_CONFIGURATION = "documentation"
   }
 
   override fun apply(project: Project) {
     val extension = project.extensions.create(EXTENSION_NAME, BintraySimpleExtension::class.java, project)
-
-    project.configurations.apply {
-      if (findByName(BintrayPlugin.DOCUMENTATION_CONFIGURATION) != null) {
-        throw GradleException("Configuration '${BintrayPlugin.DOCUMENTATION_CONFIGURATION}' is already defined")
-      }
-      create(BintrayPlugin.DOCUMENTATION_CONFIGURATION)
-    }
 
     project.afterEvaluate {
       if (extension.user == null) {

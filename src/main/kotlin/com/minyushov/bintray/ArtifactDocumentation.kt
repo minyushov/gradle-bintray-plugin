@@ -63,7 +63,6 @@ internal class ArtifactAndroidDoc : ArtifactDocumentation() {
       project.closureOf<Javadoc> {
         source(sourceSet.java.sourceFiles)
         classpath += project.files(android.bootClasspath.joinToString(File.pathSeparator))
-        classpath += project.configurations.getByName(BintrayPlugin.DOCUMENTATION_CONFIGURATION)
       }
     ) as Javadoc
 
