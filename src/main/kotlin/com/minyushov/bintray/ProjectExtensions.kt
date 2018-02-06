@@ -51,10 +51,7 @@ private fun Project.getType() =
       hasPlugin(PLUGIN_ANDROID_LIBRARY) -> ProjectType.JavaAndroidProject()
       hasPlugin(PLUGIN_KOTLIN) -> ProjectType.KotlinProject()
       hasPlugin(PLUGIN_JAVA) -> ProjectType.JavaProject()
-      else -> throw GradleException(
-        "Unsupported module. Module should apply at least one of " +
-            "the following plugins: 'java', 'kotlin', 'com.android.library'"
-      )
+      else -> ProjectType.UnknownProject()
     }
   }
 

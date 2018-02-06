@@ -5,6 +5,11 @@ internal sealed class ProjectType {
   abstract val artifacts: List<Artifact>
   val bintrayConfigurator = BintrayConfigurator()
 
+  internal class UnknownProject : ProjectType() {
+    override val pluginsConfigurators: List<PluginsConfigurator> = emptyList()
+    override val artifacts: List<Artifact> = emptyList()
+  }
+
   internal class JavaProject : ProjectType() {
     override val pluginsConfigurators by lazy {
       listOf(
