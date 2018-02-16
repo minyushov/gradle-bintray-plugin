@@ -5,6 +5,7 @@ buildscript {
     jcenter()
     google()
     maven { url 'https://dl.bintray.com/minyushov/gradle' }
+    maven { url 'https://dl.bintray.com/kotlin/kotlin-eap' }
   }
 
   dependencies {
@@ -24,16 +25,13 @@ repositories {
 }
 
 dependencies {
-  implementation gradleApi()
-
   implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlinVersion"
   implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion"
   implementation "com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.0"
-  implementation "digital.wup:android-maven-publish:3.1.1"
+  implementation "digital.wup:android-maven-publish:3.3.0"
   implementation "org.jetbrains.dokka:dokka-android-gradle-plugin:0.9.16-eap-3"
   implementation "com.android.tools.build:gradle:3.0.1"
 
-  testImplementation gradleTestKit()
   testImplementation "junit:junit:4.12"
 }
 
