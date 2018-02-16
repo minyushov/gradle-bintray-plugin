@@ -63,6 +63,35 @@ class BuildConfigurationTest {
       }
   }
 
+  @Test
+  fun testAndroid() {
+    javaClass
+      .getResourceAsStream("AndroidManifest.xml")
+      .copyTo(File(projectDir.root, "src/main")
+        .apply { mkdirs() }
+        .run { File(this, "AndroidManifest.xml") })
+
+    javaClass
+      .getResourceAsStream("settings.gradle")
+      .copyTo(projectDir.newFile("settings.gradle"))
+
+    javaClass
+      .getResourceAsStream("android.gradle")
+      .copyTo(projectDir.newFile("build.gradle"))
+      .let {
+        GradleRunner.create()
+          .withPluginClasspath()
+          .withDebug(true)
+          .withProjectDir(projectDir.root)
+          .withArguments("bintrayUpload")
+          .withPluginClasspath()
+          .build()
+      }
+      .apply {
+        assertEquals(TaskOutcome.SUCCESS, task(":bintrayUpload")?.outcome)
+      }
+  }
+
   private fun InputStream.copyTo(destination: File): File {
     FileUtils.copyInputStreamToFile(this, destination)
     return destination
