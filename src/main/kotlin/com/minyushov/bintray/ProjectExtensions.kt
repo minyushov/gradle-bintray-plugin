@@ -40,9 +40,9 @@ internal fun Project.configure(extension: BintraySimpleExtension) {
         artifacts.forEach {
           it.apply(project, extension, publication)
         }
-
-        bintrayConfigurator.configure(project, extension, publishing.publications.mapNotNull { it.name })
       }
+
+      bintrayConfigurator.configure(project, extension, publishing.publications.mapNotNull { it.name })
     }
 }
 
