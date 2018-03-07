@@ -21,7 +21,6 @@ apply plugin: 'com.minyushov.bintray'
 repositories {
   jcenter()
   google()
-  maven { url 'https://dl.bintray.com/kotlin/kotlin-eap' }
 }
 
 dependencies {
@@ -29,7 +28,7 @@ dependencies {
   implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion"
   implementation "com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.0"
   implementation "digital.wup:android-maven-publish:3.3.0"
-  implementation "org.jetbrains.dokka:dokka-android-gradle-plugin:0.9.16-eap-3"
+  implementation "org.jetbrains.dokka:dokka-android-gradle-plugin:0.9.16"
   implementation "com.android.tools.build:gradle:3.0.1"
 
   testImplementation "junit:junit:4.12"
