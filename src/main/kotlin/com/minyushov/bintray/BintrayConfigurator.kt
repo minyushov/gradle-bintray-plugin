@@ -6,7 +6,7 @@ import org.gradle.api.Project
 import org.gradle.api.publish.maven.MavenPublication
 
 internal class BintrayConfigurator {
-  fun configure(project: Project, extension: BintraySimpleExtension, publication: MavenPublication) {
+  fun configure(project: Project, extension: BintraySimpleExtension, publications: List<String>) {
     val bintray = project.extensions.findByType(BintrayExtension::class.java)
         ?: throw GradleException("Unable to find 'bintray' extension")
 
@@ -14,7 +14,11 @@ internal class BintrayConfigurator {
       dryRun = extension.dryRun
       user = extension.user
       key = extension.key
-      setPublications(publication.name)
+
+      publications
+        .toTypedArray()
+        .apply { setPublications(*this) }
+
       pkg(closureOf<BintrayExtension.PackageConfig> {
         if (extension.organization != null) {
           userOrg = extension.organization

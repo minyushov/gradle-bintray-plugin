@@ -41,7 +41,7 @@ internal fun Project.configure(extension: BintraySimpleExtension) {
           it.apply(project, extension, publication)
         }
 
-        bintrayConfigurator.configure(project, extension, publication)
+        bintrayConfigurator.configure(project, extension, publishing.publications.mapNotNull { name })
       }
     }
 }
