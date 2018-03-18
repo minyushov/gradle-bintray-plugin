@@ -12,6 +12,7 @@ import java.util.Properties
 
 private const val PLUGIN_JAVA = "java-library"
 private const val PLUGIN_KOTLIN = "kotlin"
+private const val PLUGIN_KOTLIN_ANDROID = "kotlin-android"
 private const val PLUGIN_ANDROID_LIBRARY = "com.android.library"
 
 private const val PROPERTIES_NAME = "local.properties"
@@ -49,7 +50,7 @@ internal fun Project.configure(extension: BintraySimpleExtension) {
 private fun Project.getType() =
   project.pluginManager.run {
     when {
-      hasPlugin(PLUGIN_ANDROID_LIBRARY) && hasPlugin(PLUGIN_KOTLIN) -> ProjectType.KotlinAndroidProject()
+      hasPlugin(PLUGIN_ANDROID_LIBRARY) && hasPlugin(PLUGIN_KOTLIN_ANDROID) -> ProjectType.KotlinAndroidProject()
       hasPlugin(PLUGIN_ANDROID_LIBRARY) -> ProjectType.JavaAndroidProject()
       hasPlugin(PLUGIN_KOTLIN) -> ProjectType.KotlinProject()
       hasPlugin(PLUGIN_JAVA) -> ProjectType.JavaProject()
