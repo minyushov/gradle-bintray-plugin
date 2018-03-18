@@ -50,7 +50,7 @@ bintrayUpload {
   repo = "gradle"
   groupId = "com.minyushov.gradle"
   artifactId = "bintray"
-  version = "1.0.3"
+  version = "1.0.4"
   vcsUrl = "https://github.com/minyushov/gradle-bintray-plugin.git"
   license = "Apache-2.0"
   sources = false
