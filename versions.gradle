@@ -1,4 +1,3 @@
 ext {
-  javaVersion = JavaVersion.VERSION_1_8
-  kotlinVersion = "1.2.30"
+  kotlinVersion = "1.2.31"
 }
