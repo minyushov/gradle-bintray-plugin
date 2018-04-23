@@ -27,7 +27,7 @@ dependencies {
   implementation "com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.0"
   implementation "digital.wup:android-maven-publish:3.3.0"
   implementation "org.jetbrains.dokka:dokka-android-gradle-plugin:0.9.16"
-  implementation "com.android.tools.build:gradle:3.1.1"
+  implementation "com.android.tools.build:gradle:3.1.2"
 
   testImplementation "junit:junit:4.12"
 }
