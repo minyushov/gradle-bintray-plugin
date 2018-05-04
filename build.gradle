@@ -1,5 +1,7 @@
 buildscript {
-  apply from: "versions.gradle"
+  ext {
+    kotlinVersion = "1.2.41"
+  }
 
   repositories {
     jcenter()
@@ -23,7 +25,7 @@ repositories {
 }
 
 dependencies {
-  implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
+  implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
   implementation "com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.0"
   implementation "digital.wup:android-maven-publish:3.3.0"
   implementation "org.jetbrains.dokka:dokka-android-gradle-plugin:0.9.16"
