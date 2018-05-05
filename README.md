@@ -35,3 +35,6 @@ bintrayUpload {
   }
 }
 ```
+
+### Using the plugin
+`./gradlew bintrayUpload` will publish artifacts to the Bintray.
