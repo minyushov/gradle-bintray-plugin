@@ -9,3 +9,4 @@ gradle-plugin-sample/sample-kotlin/out
 gradle-plugin/build
 gradle-plugin/out
 build
+.idea
