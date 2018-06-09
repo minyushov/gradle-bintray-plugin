@@ -3,7 +3,6 @@ package com.minyushov.bintray
 import com.jfrog.bintray.gradle.BintrayExtension
 import org.gradle.api.GradleException
 import org.gradle.api.Project
-import org.gradle.api.publish.maven.MavenPublication
 
 internal class BintrayConfigurator {
   fun configure(project: Project, extension: BintraySimpleExtension, publications: List<String>) {
@@ -24,7 +23,7 @@ internal class BintrayConfigurator {
           userOrg = extension.organization
         }
         repo = extension.repo
-        name = extension.artifactId
+        name = extension.pkgName ?: extension.artifactId
         version(closureOf<BintrayExtension.VersionConfig> {
           name = extension.version
         })
