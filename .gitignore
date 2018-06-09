@@ -10,3 +10,4 @@ gradle-plugin/build
 gradle-plugin/out
 build
 .idea
+out
