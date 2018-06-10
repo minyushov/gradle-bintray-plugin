@@ -23,6 +23,7 @@ bintrayUpload {
   key = "Bintray Api Key"
   artifactId = "library"
   repo = "repository"
+  pkgName = "Bintray Package Name" // Optional. Default is 'artifactId'
   groupId = "com.example"
   version = "1.0"
   vcsUrl = "https://github.com/example/example.git"
