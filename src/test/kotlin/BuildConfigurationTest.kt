@@ -19,13 +19,14 @@ class BuildConfigurationTest {
       .getResourceAsStream("empty.gradle")
       .copyTo(projectDir.newFile("build.gradle"))
       .let {
-        GradleRunner.create()
+        GradleRunner
+          .create()
+          .forwardOutput()
           .withProjectDir(projectDir.root)
+          .withArguments("tasks")
+          .withDebug(true)
           .withPluginClasspath()
-          .buildAndFail()
-      }
-      .apply {
-        assert(output.contains("Bintray user is not defined in 'bintrayUpload' extension"))
+          .build()
       }
   }
 
@@ -35,9 +36,12 @@ class BuildConfigurationTest {
       .getResourceAsStream("not-supported.gradle")
       .copyTo(projectDir.newFile("build.gradle"))
       .let {
-        GradleRunner.create()
+        GradleRunner
+          .create()
+          .forwardOutput()
           .withProjectDir(projectDir.root)
           .withArguments("bintrayUpload")
+          .withDebug(true)
           .withPluginClasspath()
           .buildAndFail()
       }
@@ -52,9 +56,32 @@ class BuildConfigurationTest {
       .getResourceAsStream("java.gradle")
       .copyTo(projectDir.newFile("build.gradle"))
       .let {
-        GradleRunner.create()
+        GradleRunner
+          .create()
+          .forwardOutput()
           .withProjectDir(projectDir.root)
           .withArguments("bintrayUpload")
+          .withDebug(true)
+          .withPluginClasspath()
+          .build()
+      }
+      .apply {
+        assertEquals(TaskOutcome.SUCCESS, task(":bintrayUpload")?.outcome)
+      }
+  }
+
+  @Test
+  fun testGradlePlugin() {
+    javaClass
+      .getResourceAsStream("gradle-plugin.gradle")
+      .copyTo(projectDir.newFile("build.gradle"))
+      .let {
+        GradleRunner
+          .create()
+          .forwardOutput()
+          .withProjectDir(projectDir.root)
+          .withArguments("bintrayUpload")
+          .withDebug(true)
           .withPluginClasspath()
           .build()
       }
@@ -79,7 +106,9 @@ class BuildConfigurationTest {
       .getResourceAsStream("android.gradle")
       .copyTo(projectDir.newFile("build.gradle"))
       .let {
-        GradleRunner.create()
+        GradleRunner
+          .create()
+          .forwardOutput()
           .withPluginClasspath()
           .withDebug(true)
           .withProjectDir(projectDir.root)

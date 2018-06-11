@@ -10,7 +10,7 @@ import org.gradle.api.tasks.bundling.Jar
 
 internal abstract class ArtifactSources : Artifact {
   override fun apply(project: Project, extension: BintraySimpleExtension, publication: MavenPublication) {
-    if (extension.sources) {
+    if (extension.sources.getOrElse(true)) {
       apply(project, publication)
     }
   }
@@ -30,15 +30,15 @@ internal class ArtifactJavaSources : ArtifactSources() {
         ?: throw GradleException("Unable to find main source set")
 
     val task = project.task(
-        mapOf(
-            Task.TASK_TYPE to Jar::class.java,
-            Task.TASK_DEPENDS_ON to classesTask
-        ),
-        "sourcesJar",
-        project.closureOf<Jar> {
-          classifier = "sources"
-          from(sourceSet.allSource)
-        }
+      mapOf(
+        Task.TASK_TYPE to Jar::class.java,
+        Task.TASK_DEPENDS_ON to classesTask
+      ),
+      "sourcesJar",
+      project.closureOf<Jar> {
+        classifier = "sources"
+        from(sourceSet.allSource)
+      }
     )
 
     publication.artifact(task)
@@ -54,14 +54,14 @@ internal class ArtifactAndroidSources : ArtifactSources() {
         ?: throw GradleException("Unable to find 'main' source set")
 
     val task = project.task(
-        mapOf(
-            Task.TASK_TYPE to Jar::class.java
-        ),
-        "sourcesJar",
-        project.closureOf<Jar> {
-          classifier = "sources"
-          from(sourceSet.java.srcDirs)
-        }
+      mapOf(
+        Task.TASK_TYPE to Jar::class.java
+      ),
+      "sourcesJar",
+      project.closureOf<Jar> {
+        classifier = "sources"
+        from(sourceSet.java.srcDirs)
+      }
     )
 
     publication.artifact(task)
