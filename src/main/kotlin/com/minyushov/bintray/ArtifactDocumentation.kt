@@ -13,7 +13,7 @@ import java.io.File
 
 internal abstract class ArtifactDocumentation : Artifact {
   override fun apply(project: Project, extension: BintraySimpleExtension, publication: MavenPublication) {
-    if (extension.docs) {
+    if (extension.docs.getOrElse(true)) {
       configure(project, extension, publication)
     }
   }
