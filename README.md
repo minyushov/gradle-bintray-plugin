@@ -39,3 +39,17 @@ bintrayUpload {
 
 ### Using the plugin
 `./gradlew bintrayUpload` will publish artifacts to the Bintray.
+
+If you don't want to expose your `Bintray User` or `Bintray Api Key` in `build.gradle`, follow the instructions below.
+
+1. Configure the plugin like this:
+```groovy
+bintrayUpload {
+  user = findProperty('user') ?: ''
+  key = findProperty('key') ?: ''
+  ...
+}
+```
+
+2. Run the following in the command line.
+> ./gradlew -Puser=`<user-name>` -Pkey=`<bintray-api-key>` bintrayUpload
