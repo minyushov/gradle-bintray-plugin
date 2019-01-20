@@ -109,7 +109,6 @@ class BuildConfigurationTest {
         GradleRunner
           .create()
           .forwardOutput()
-          .withPluginClasspath()
           .withDebug(true)
           .withProjectDir(projectDir.root)
           .withArguments("bintrayUpload")
