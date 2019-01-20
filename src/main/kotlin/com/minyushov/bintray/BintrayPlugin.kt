@@ -1,7 +1,7 @@
 package com.minyushov.bintray
 
-import com.android.build.gradle.LibraryExtension
-import com.jfrog.bintray.gradle.tasks.BintrayUploadTask
+import com.android.build.gradle.internal.tasks.factory.dependsOn
+import com.jfrog.bintray.gradle.BintrayExtension
 import org.gradle.api.GradleException
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -25,117 +25,106 @@ class BintrayPlugin : Plugin<Project> {
   private fun ProjectType.configure(project: Project, extension: BintraySimpleExtension) {
     pluginsConfigurators.forEach { it.configure(project) }
 
-    project.afterEvaluate { _ ->
-      project.extensions.configure(PublishingExtension::class.java) { publishing ->
-        val publication = publishing.publications.maybeCreate("maven", MavenPublication::class.java)
+    project.afterEvaluate {
+      createPublication(project, artifacts, extension)
+      configureBintray(project, extension)
+      configureTaskDependencies(project)
+    }
+  }
 
-        extension
-          .version
-          .orNull
-          ?.apply { project.setProperty("version", this) }
-          ?.apply { publication.version = this }
-          ?: throw GradleException("Bintray library version is not defined in '$EXTENSION_NAME' extension")
+  private fun createPublication(project: Project, artifacts: List<Artifact>, extension: BintraySimpleExtension) {
+    project.extensions.configure(PublishingExtension::class.java) { publishing ->
+      val publication = publishing.publications.maybeCreate("maven", MavenPublication::class.java)
 
-        extension
-          .groupId
-          .orNull
-          ?.apply { project.setProperty("group", this) }
-          ?.apply { publication.groupId = this }
-          ?: throw GradleException("Bintray library groupId is not defined in '$EXTENSION_NAME' extension")
+      val version = checkNotNull(extension.version.orNull) { "Bintray library version is not defined in '$EXTENSION_NAME' extension" }
+      project.setProperty("version", version)
+      publication.version = version
 
-        extension
-          .artifactId
-          .orNull
-          ?.apply { project.setProperty("archivesBaseName", this) }
-          ?.apply { publication.artifactId = this }
-          ?: throw GradleException("Bintray library artifactId is not defined in '$EXTENSION_NAME' extension")
+      val group = checkNotNull(extension.groupId.orNull) { "Bintray library groupId is not defined in '$EXTENSION_NAME' extension" }
+      project.setProperty("group", group)
+      publication.groupId = group
 
-        artifacts
-          .forEach { it.apply(project, extension, publication) }
+      val artifactId = checkNotNull(extension.artifactId.orNull) { "Bintray library artifactId is not defined in '$EXTENSION_NAME' extension" }
+      project.setProperty("archivesBaseName", artifactId)
+      publication.artifactId = artifactId
 
-        publishing
-          .publications
-          .mapNotNull { it.name }
-          .also { publications ->
+      artifacts.forEach { it.apply(project, extension, publication) }
+    }
+  }
 
-            project
-              .tasks
-              .findByName("bintrayUpload")
-              .let { it as? BintrayUploadTask }
-              ?.apply {
+  private fun configureBintray(project: Project, extension: BintraySimpleExtension) {
+    val bintray = checkNotNull(project.extensions.findByType(BintrayExtension::class.java)) { "Unable to find 'bintray' extension" }
 
-                dryRun = extension
-                  .dryRun
-                  .getOrElse(true)
+    bintray.dryRun = extension
+      .dryRun
+      .getOrElse(true)
 
-                apiKey = extension
-                  .key
-                  .apply {
-                    if (orNull.isNullOrEmpty()) {
-                      set(project.localProperty("bintray.key"))
-                    }
-                  }
-                  .orNull
-                  ?: throw GradleException("Bintray api key is not defined in '$EXTENSION_NAME' extension")
+    bintray.key = extension
+      .key
+      .apply {
+        if (orNull.isNullOrEmpty()) {
+          set(project.localProperty("bintray.key"))
+        }
+      }
+      .orNull
+      ?: throw GradleException("Bintray api key is not defined in '$EXTENSION_NAME' extension")
 
-                user = extension
-                  .user
-                  .apply {
-                    if (orNull.isNullOrEmpty()) {
-                      set(project.localProperty("bintray.user"))
-                    }
-                  }
-                  .orNull
-                  ?: throw GradleException("Bintray user is not defined in '$EXTENSION_NAME' extension")
+    bintray.user = extension
+      .user
+      .apply {
+        if (orNull.isNullOrEmpty()) {
+          set(project.localProperty("bintray.user"))
+        }
+      }
+      .orNull
+      ?: throw GradleException("Bintray user is not defined in '$EXTENSION_NAME' extension")
 
-                userOrg = extension
-                  .organization
-                  .orNull
+    bintray.pkg.userOrg = extension
+      .organization
+      .orNull
+      ?: bintray.user
 
-                repoName = extension
-                  .repo
-                  .orNull
-                  ?: throw GradleException("Bintray repo is not defined in '$EXTENSION_NAME' extension")
+    bintray.pkg.repo = extension
+      .repo
+      .orNull
+      ?: throw GradleException("Bintray repo is not defined in '$EXTENSION_NAME' extension")
 
-                packageName = extension
-                  .pkgName
-                  .orNull
-                  ?: extension
-                  .artifactId
-                  .orNull
-                  ?: throw GradleException("Bintray library artifactId is not defined in '$EXTENSION_NAME' extension")
+    bintray.pkg.name = extension
+      .pkgName
+      .orNull
+      ?: extension
+      .artifactId
+      .orNull
+      ?: throw GradleException("Bintray library artifactId is not defined in '$EXTENSION_NAME' extension")
 
-                packageVcsUrl = extension
-                  .vcsUrl
-                  .orNull
-                  ?: throw GradleException("Bintray library vcsUrl is not defined in '${BintrayPlugin.EXTENSION_NAME}' extension")
+    bintray.pkg.vcsUrl = extension
+      .vcsUrl
+      .orNull
+      ?: throw GradleException("Bintray library vcsUrl is not defined in '${BintrayPlugin.EXTENSION_NAME}' extension")
 
-                versionName = extension
-                  .version
-                  .orNull
-                  ?: throw GradleException("Bintray library version is not defined in '${BintrayPlugin.EXTENSION_NAME}' extension")
+    bintray.pkg.version.name = extension
+      .version
+      .orNull
+      ?: project.version.toString()
+      ?: throw GradleException("Bintray library version is not defined in '${BintrayPlugin.EXTENSION_NAME}' extension")
 
-                setPackageLicenses(
-                  extension
-                    .license
-                    .orNull
-                    ?: throw GradleException("Bintray library license is not defined in '${BintrayPlugin.EXTENSION_NAME}' extension")
-                )
+    bintray.pkg.setLicenses(
+      extension
+        .license
+        .orNull
+        ?: throw GradleException("Bintray library license is not defined in '${BintrayPlugin.EXTENSION_NAME}' extension")
+    )
 
-                publications
-                  .toTypedArray()
-                  .apply { setPublications(*this) }
-                  .forEach { publication ->
-                    publishing
-                      .publications
-                      .findByName(publication)
-                      ?.also {
-                        dependsOn("publish${it.name.capitalize()}PublicationToMavenLocal")
-                      } ?: project.logger.warn("Publication $publication not found in project ${project.path}.")
-                  }
+    project.extensions.configure(PublishingExtension::class.java) { publishing ->
+      bintray.setPublications(*publishing.publications.mapNotNull { it.name }.toTypedArray())
+    }
+  }
 
-              } ?: throw GradleException("Unable to find 'bintrayUpload' task")
-          }
+  private fun configureTaskDependencies(project: Project) {
+    project.extensions.configure(PublishingExtension::class.java) { publishing ->
+      val uploadTask = project.tasks.named("bintrayUpload")
+      publishing.publications.forEach { publication ->
+        uploadTask.dependsOn("publish${publication.name.capitalize()}PublicationToMavenLocal")
       }
     }
   }

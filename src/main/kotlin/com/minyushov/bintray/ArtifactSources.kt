@@ -36,7 +36,7 @@ internal class ArtifactJavaSources : ArtifactSources() {
       ),
       "sourcesJar",
       project.closureOf<Jar> {
-        classifier = "sources"
+        archiveClassifier.set("sources")
         from(sourceSet.allSource)
       }
     )
@@ -59,7 +59,7 @@ internal class ArtifactAndroidSources : ArtifactSources() {
       ),
       "sourcesJar",
       project.closureOf<Jar> {
-        classifier = "sources"
+        archiveClassifier.set("sources")
         from(sourceSet.java.srcDirs)
       }
     )

@@ -37,7 +37,7 @@ internal class ArtifactJavaDoc : ArtifactDocumentation() {
       ),
       "javadocJar",
       project.closureOf<Jar> {
-        classifier = "javadoc"
+        archiveClassifier.set("javadoc")
         from(javadocTask.destinationDir)
       }
     )
@@ -77,7 +77,7 @@ internal class ArtifactAndroidDoc : ArtifactDocumentation() {
       ),
       "javadocJar",
       project.closureOf<Jar> {
-        classifier = "javadoc"
+        archiveClassifier.set("javadoc")
         from(androidJavadocs.destinationDir)
       }
     )
@@ -105,7 +105,7 @@ internal class ArtifactKotlinDoc : ArtifactDocumentation() {
       ),
       "javadocJar",
       project.closureOf<Jar> {
-        classifier = "javadoc"
+        archiveClassifier.set("javadoc")
         from(dokka.outputDirectory)
       }
     )

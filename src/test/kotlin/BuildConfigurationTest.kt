@@ -2,6 +2,7 @@ import org.apache.commons.io.FileUtils
 import org.gradle.testkit.runner.GradleRunner
 import org.gradle.testkit.runner.TaskOutcome
 import org.junit.Assert.assertEquals
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TemporaryFolder
@@ -111,7 +112,7 @@ class BuildConfigurationTest {
           .forwardOutput()
           .withDebug(true)
           .withProjectDir(projectDir.root)
-          .withArguments("bintrayUpload")
+          .withArguments("bintrayUpload", "--stacktrace")
           .withPluginClasspath()
           .build()
       }
