@@ -11,7 +11,7 @@ buildscript {
 
   dependencies {
     classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
-    classpath "com.minyushov.gradle:bintray:1.1.0"
+    classpath "com.minyushov.gradle:bintray:1.2.0"
   }
 }
 
