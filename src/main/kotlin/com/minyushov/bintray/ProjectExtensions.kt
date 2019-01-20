@@ -27,7 +27,7 @@ internal fun Project.getType() =
 
 internal fun Project.localProperty(key: String): String? =
   localProperties(PROPERTIES_NAME) { getProperty(key) }
-      ?: rootProject.localProperties(PROPERTIES_NAME) { getProperty(key) }
+    ?: rootProject.localProperties(PROPERTIES_NAME) { getProperty(key) }
 
 private inline fun Project.localProperties(name: String, action: Properties.() -> String?): String? =
   try {

@@ -21,13 +21,13 @@ internal abstract class ArtifactSources : Artifact {
 internal class ArtifactJavaSources : ArtifactSources() {
   override fun apply(project: Project, publication: MavenPublication) {
     val classesTask = project.tasks.findByName("classes")
-        ?: throw GradleException("Unable to find 'classes' task")
+      ?: throw GradleException("Unable to find 'classes' task")
 
     val javaPlugin = project.convention.getPlugin(JavaPluginConvention::class.java)
-        ?: throw GradleException("Unable to find JavaPluginConvention")
+      ?: throw GradleException("Unable to find JavaPluginConvention")
 
     val sourceSet = javaPlugin.sourceSets.getByName("main")
-        ?: throw GradleException("Unable to find main source set")
+      ?: throw GradleException("Unable to find main source set")
 
     val task = project.task(
       mapOf(
@@ -48,10 +48,10 @@ internal class ArtifactJavaSources : ArtifactSources() {
 internal class ArtifactAndroidSources : ArtifactSources() {
   override fun apply(project: Project, publication: MavenPublication) {
     val android = project.extensions.getByType(LibraryExtension::class.java)
-        ?: throw GradleException("Unable to find 'android' extension")
+      ?: throw GradleException("Unable to find 'android' extension")
 
     val sourceSet = android.sourceSets.findByName("main")
-        ?: throw GradleException("Unable to find 'main' source set")
+      ?: throw GradleException("Unable to find 'main' source set")
 
     val task = project.task(
       mapOf(

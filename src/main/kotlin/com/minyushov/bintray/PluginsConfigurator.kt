@@ -3,7 +3,6 @@ package com.minyushov.bintray
 import com.jfrog.bintray.gradle.BintrayPlugin
 import digital.wup.android_maven_publish.AndroidMavenPublishPlugin
 import org.gradle.api.Project
-import org.gradle.api.plugins.AppliedPlugin
 import org.gradle.api.publish.maven.plugins.MavenPublishPlugin
 import org.jetbrains.dokka.gradle.DokkaAndroidPlugin
 import org.jetbrains.dokka.gradle.DokkaPlugin

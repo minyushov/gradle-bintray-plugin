@@ -7,7 +7,6 @@ import org.gradle.api.Task
 import org.gradle.api.publish.maven.MavenPublication
 import org.gradle.api.tasks.bundling.Jar
 import org.gradle.api.tasks.javadoc.Javadoc
-import org.gradle.external.javadoc.StandardJavadocDocletOptions
 import org.jetbrains.dokka.gradle.DokkaTask
 import java.io.File
 
@@ -24,7 +23,7 @@ internal abstract class ArtifactDocumentation : Artifact {
 internal class ArtifactJavaDoc : ArtifactDocumentation() {
   override fun configure(project: Project, extension: BintraySimpleExtension, publication: MavenPublication) {
     val javadocTask = project.tasks.findByName("javadoc") as? Javadoc
-        ?: throw GradleException("Unable to find 'javadoc' task")
+      ?: throw GradleException("Unable to find 'javadoc' task")
 
     extension
       .docsSettings
@@ -50,10 +49,10 @@ internal class ArtifactJavaDoc : ArtifactDocumentation() {
 internal class ArtifactAndroidDoc : ArtifactDocumentation() {
   override fun configure(project: Project, extension: BintraySimpleExtension, publication: MavenPublication) {
     val android = project.extensions.getByType(LibraryExtension::class.java)
-        ?: throw GradleException("Unable to find 'android' extension")
+      ?: throw GradleException("Unable to find 'android' extension")
 
     val sourceSet = android.sourceSets.findByName("main")
-        ?: throw GradleException("Unable to find 'main' source set")
+      ?: throw GradleException("Unable to find 'main' source set")
 
     val androidJavadocs = project.task(
       mapOf(
@@ -90,7 +89,7 @@ internal class ArtifactAndroidDoc : ArtifactDocumentation() {
 internal class ArtifactKotlinDoc : ArtifactDocumentation() {
   override fun configure(project: Project, extension: BintraySimpleExtension, publication: MavenPublication) {
     val dokka = project.tasks.findByName("dokka") as? DokkaTask
-        ?: throw GradleException("Unable to find 'dokka' task")
+      ?: throw GradleException("Unable to find 'dokka' task")
 
     dokka.outputFormat = "javadoc"
 

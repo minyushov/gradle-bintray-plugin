@@ -13,7 +13,7 @@ import org.gradle.internal.Cast.uncheckedCast
  * @see [KotlinClosure1]
  */
 internal fun <T : Any> Any.closureOf(action: T.() -> Unit): Closure<Any?> =
-    KotlinClosure1(action, this, this)
+  KotlinClosure1(action, this, this)
 
 
 /**
@@ -26,10 +26,10 @@ internal fun <T : Any> Any.closureOf(action: T.() -> Unit): Closure<Any?> =
  * @see [KotlinClosure1]
  */
 internal fun <T> Any.delegateClosureOf(action: T.() -> Unit) =
-    object : Closure<Unit>(this, this) {
-      @Suppress("unused") // to be called dynamically by Groovy
-      fun doCall() = uncheckedCast<T>(delegate).action()
-    }
+  object : Closure<Unit>(this, this) {
+    @Suppress("unused") // to be called dynamically by Groovy
+    fun doCall() = uncheckedCast<T>(delegate)?.action()
+  }
 
 
 /**
@@ -43,9 +43,9 @@ internal fun <T> Any.delegateClosureOf(action: T.() -> Unit) =
  * @see [Closure]
  */
 internal open class KotlinClosure0<V : Any>(
-    val function: () -> V?,
-    owner: Any? = null,
-    thisObject: Any? = null
+  val function: () -> V?,
+  owner: Any? = null,
+  thisObject: Any? = null
 ) : Closure<V?>(owner, thisObject) {
 
   @Suppress("unused") // to be called dynamically by Groovy
@@ -65,9 +65,9 @@ internal open class KotlinClosure0<V : Any>(
  * @see [Closure]
  */
 internal class KotlinClosure1<in T : Any, V : Any>(
-    val function: T.() -> V?,
-    owner: Any? = null,
-    thisObject: Any? = null
+  val function: T.() -> V?,
+  owner: Any? = null,
+  thisObject: Any? = null
 ) : Closure<V?>(owner, thisObject) {
 
   @Suppress("unused") // to be called dynamically by Groovy
@@ -88,9 +88,9 @@ internal class KotlinClosure1<in T : Any, V : Any>(
  * @see [Closure]
  */
 internal class KotlinClosure2<in T : Any, in U : Any, V : Any>(
-    val function: (T, U) -> V?,
-    owner: Any? = null,
-    thisObject: Any? = null
+  val function: (T, U) -> V?,
+  owner: Any? = null,
+  thisObject: Any? = null
 ) : Closure<V?>(owner, thisObject) {
 
   @Suppress("unused") // to be called dynamically by Groovy

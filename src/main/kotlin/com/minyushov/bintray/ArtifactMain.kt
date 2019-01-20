@@ -15,7 +15,7 @@ internal class ArtifactMainJava : ArtifactMain() {
   override fun apply(project: Project, publication: MavenPublication) =
     publication.from(
       project.components.findByName("java")
-          ?: throw GradleException("Unable to find 'java' component")
+        ?: throw GradleException("Unable to find 'java' component")
     )
 }
 
@@ -23,6 +23,6 @@ internal class ArtifactMainAndroid : ArtifactMain() {
   override fun apply(project: Project, publication: MavenPublication) =
     publication.from(
       project.components.findByName("android")
-          ?: throw GradleException("Unable to find 'android' component")
+        ?: throw GradleException("Unable to find 'android' component")
     )
 }
