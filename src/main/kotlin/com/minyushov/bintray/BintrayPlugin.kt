@@ -67,7 +67,10 @@ class BintrayPlugin : Plugin<Project> {
         }
       }
       .orNull
-      ?: throw GradleException("Bintray api key is not defined in '$EXTENSION_NAME' extension")
+
+    if (bintray.key.isNullOrEmpty()) {
+      project.logger.warn("Bintray api key is not defined in '$EXTENSION_NAME' extension")
+    }
 
     bintray.user = extension
       .user
@@ -77,7 +80,10 @@ class BintrayPlugin : Plugin<Project> {
         }
       }
       .orNull
-      ?: throw GradleException("Bintray user is not defined in '$EXTENSION_NAME' extension")
+
+    if (bintray.user.isNullOrEmpty()) {
+      project.logger.warn("Bintray user is not defined in '$EXTENSION_NAME' extension")
+    }
 
     bintray.pkg.userOrg = extension
       .organization
@@ -93,9 +99,9 @@ class BintrayPlugin : Plugin<Project> {
       .pkgName
       .orNull
       ?: extension
-      .artifactId
-      .orNull
-      ?: throw GradleException("Bintray library artifactId is not defined in '$EXTENSION_NAME' extension")
+        .artifactId
+        .orNull
+        ?: throw GradleException("Bintray library artifactId is not defined in '$EXTENSION_NAME' extension")
 
     bintray.pkg.vcsUrl = extension
       .vcsUrl
@@ -106,7 +112,7 @@ class BintrayPlugin : Plugin<Project> {
       .version
       .orNull
       ?: project.version.toString()
-      ?: throw GradleException("Bintray library version is not defined in '${BintrayPlugin.EXTENSION_NAME}' extension")
+        ?: throw GradleException("Bintray library version is not defined in '${BintrayPlugin.EXTENSION_NAME}' extension")
 
     bintray.pkg.setLicenses(
       extension
