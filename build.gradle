@@ -33,7 +33,7 @@ dependencies {
     exclude group: "xerces", module: "xercesImpl"
   }
 
-  implementation("com.android.tools.build:gradle:3.4.0-beta01") {
+  implementation("com.android.tools.build:gradle:3.4.0-beta03") {
     exclude group: "org.jetbrains.kotlin", module: "kotlin-stdlib-jre8"
   }
 
@@ -57,7 +57,7 @@ bintrayUpload {
   repo = "gradle"
   groupId = "com.minyushov.gradle"
   artifactId = "bintray"
-  version = "1.2.0"
+  version = "1.2.1"
   vcsUrl = "https://github.com/minyushov/gradle-bintray-plugin.git"
   license = "Apache-2.0"
   docs = false
