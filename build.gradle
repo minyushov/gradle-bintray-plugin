@@ -27,6 +27,7 @@ repositories {
 dependencies {
   implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
   implementation "digital.wup:android-maven-publish:3.6.2"
+  implementation "org.jetbrains.dokka:dokka-gradle-plugin:0.9.18"
   implementation "org.jetbrains.dokka:dokka-android-gradle-plugin:0.9.18"
 
   implementation("com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.4") {
@@ -57,7 +58,7 @@ bintrayUpload {
   repo = "gradle"
   groupId = "com.minyushov.gradle"
   artifactId = "bintray"
-  version = "1.2.0"
+  version = "1.2.1"
   vcsUrl = "https://github.com/minyushov/gradle-bintray-plugin.git"
   license = "Apache-2.0"
   docs = false
