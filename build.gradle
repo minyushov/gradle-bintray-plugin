@@ -1,6 +1,6 @@
 buildscript {
   ext {
-    kotlinVersion = "1.3.11"
+    kotlinVersion = "1.3.21"
   }
 
   repositories {
@@ -27,13 +27,13 @@ repositories {
 dependencies {
   implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
   implementation "digital.wup:android-maven-publish:3.6.2"
-  implementation "org.jetbrains.dokka:dokka-android-gradle-plugin:0.9.17"
+  implementation "org.jetbrains.dokka:dokka-android-gradle-plugin:0.9.18"
 
   implementation("com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.4") {
     exclude group: "xerces", module: "xercesImpl"
   }
 
-  implementation("com.android.tools.build:gradle:3.4.0-beta01") {
+  implementation("com.android.tools.build:gradle:3.4.0-rc02") {
     exclude group: "org.jetbrains.kotlin", module: "kotlin-stdlib-jre8"
   }
 
