@@ -1,6 +1,8 @@
 package com.minyushov.bintray
 
 import com.android.build.gradle.LibraryExtension
+import com.android.build.gradle.internal.tasks.factory.dependsOn
+import groovy.lang.Closure
 import org.gradle.api.GradleException
 import org.gradle.api.Project
 import org.gradle.api.Task
@@ -22,27 +24,18 @@ internal abstract class ArtifactDocumentation : Artifact {
 
 internal class ArtifactJavaDoc : ArtifactDocumentation() {
   override fun configure(project: Project, extension: BintraySimpleExtension, publication: MavenPublication) {
-    val javadocTask = project.tasks.findByName("javadoc") as? Javadoc
-      ?: throw GradleException("Unable to find 'javadoc' task")
+    val javadocTask = project.tasks.named("javadoc", Javadoc::class.java) { task ->
+      task.applyClosure(extension.docsSettings)
+    }
 
-    extension
-      .docsSettings
-      ?.apply { delegate = javadocTask }
-      ?.call()
+    val javadocJarTask = project.tasks.register("javadocJar", Jar::class.java) { task ->
+      task.archiveClassifier.set("javadoc")
+      task.from(javadocTask.get().destinationDir)
+    }
 
-    val task = project.task(
-      mapOf(
-        Task.TASK_TYPE to Jar::class.java,
-        Task.TASK_DEPENDS_ON to javadocTask
-      ),
-      "javadocJar",
-      project.closureOf<Jar> {
-        archiveClassifier.set("javadoc")
-        from(javadocTask.destinationDir)
-      }
-    )
+    javadocJarTask.dependsOn(javadocTask)
 
-    publication.artifact(task)
+    publication.artifact(LazyPublishArtifact(javadocJarTask))
   }
 }
 
@@ -54,62 +47,44 @@ internal class ArtifactAndroidDoc : ArtifactDocumentation() {
     val sourceSet = android.sourceSets.findByName("main")
       ?: throw GradleException("Unable to find 'main' source set")
 
-    val androidJavadocs = project.task(
-      mapOf(
-        Task.TASK_TYPE to Javadoc::class.java
-      ),
-      "androidJavadocs",
-      project.closureOf<Javadoc> {
-        source(sourceSet.java.sourceFiles)
-        classpath += project.files(android.bootClasspath.joinToString(File.pathSeparator))
-      }
-    ) as Javadoc
+    val javadocsTask = project.tasks.register("androidJavadocs", Javadoc::class.java) { task ->
+      task.source(sourceSet.java.sourceFiles)
+      task.classpath += project.files(android.bootClasspath.joinToString(File.pathSeparator))
+      task.applyClosure(extension.docsSettings)
+    }
 
-    extension
-      .docsSettings
-      ?.apply { delegate = androidJavadocs }
-      ?.call()
+    val javadocJarTask = project.tasks.register("javadocJar", Jar::class.java) { task ->
+      task.archiveClassifier.set("javadoc")
+      task.from(javadocsTask.get().destinationDir)
+    }
 
-    val task = project.task(
-      mapOf(
-        Task.TASK_TYPE to Jar::class.java,
-        Task.TASK_DEPENDS_ON to androidJavadocs
-      ),
-      "javadocJar",
-      project.closureOf<Jar> {
-        archiveClassifier.set("javadoc")
-        from(androidJavadocs.destinationDir)
-      }
-    )
+    javadocJarTask.dependsOn(javadocsTask)
 
-    publication.artifact(task)
+    publication.artifact(LazyPublishArtifact(javadocJarTask))
   }
 }
 
 internal class ArtifactKotlinDoc : ArtifactDocumentation() {
   override fun configure(project: Project, extension: BintraySimpleExtension, publication: MavenPublication) {
-    val dokka = project.tasks.findByName("dokka") as? DokkaTask
-      ?: throw GradleException("Unable to find 'dokka' task")
+    val dokkaTask = project.tasks.named("dokka", DokkaTask::class.java) { task ->
+      task.outputFormat = "javadoc"
+      task.applyClosure(extension.docsSettings)
+    }
 
-    dokka.outputFormat = "javadoc"
+    val javadocJarTask = project.tasks.register("javadocJar", Jar::class.java) { task ->
+      task.archiveClassifier.set("javadoc")
+      task.from(dokkaTask.get().outputDirectory)
+    }
 
-    extension
-      .docsSettings
-      ?.apply { delegate = dokka }
-      ?.call()
+    javadocJarTask.dependsOn(dokkaTask)
 
-    val task = project.task(
-      mapOf(
-        Task.TASK_TYPE to Jar::class.java,
-        Task.TASK_DEPENDS_ON to dokka
-      ),
-      "javadocJar",
-      project.closureOf<Jar> {
-        archiveClassifier.set("javadoc")
-        from(dokka.outputDirectory)
-      }
-    )
+    publication.artifact(LazyPublishArtifact(javadocJarTask))
+  }
+}
 
-    publication.artifact(task)
+private fun Task.applyClosure(closure: Closure<*>?) {
+  if (closure != null) {
+    closure.delegate = this
+    closure.call()
   }
 }
