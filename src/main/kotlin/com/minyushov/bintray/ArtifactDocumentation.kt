@@ -49,7 +49,14 @@ internal class ArtifactAndroidDoc : ArtifactDocumentation() {
 
     val javadocsTask = project.tasks.register("androidJavadocs", Javadoc::class.java) { task ->
       task.source(sourceSet.java.sourceFiles)
+
       task.classpath += project.files(android.bootClasspath.joinToString(File.pathSeparator))
+
+      val variant = android.libraryVariants.find { it.name == "release" }
+      if (variant != null) {
+        task.classpath += variant.javaCompileProvider.get().classpath
+      }
+
       task.applyClosure(extension.docsSettings)
     }
 
