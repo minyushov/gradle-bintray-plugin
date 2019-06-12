@@ -1,9 +1,6 @@
 ### Setting up the plugin
 ```groovy
 buildscript {
-  repositories {
-    maven { url 'https://dl.bintray.com/minyushov/gradle' }
-  }
   dependencies {
     classpath "com.minyushov.gradle:bintray:x"
   }
