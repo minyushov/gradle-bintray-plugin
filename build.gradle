@@ -26,16 +26,14 @@ repositories {
 
 dependencies {
   implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
-  implementation "digital.wup:android-maven-publish:3.6.2"
+
+  implementation "com.android.tools.build:gradle:3.6.0-alpha09"
+
   implementation "org.jetbrains.dokka:dokka-gradle-plugin:0.9.18"
   implementation "org.jetbrains.dokka:dokka-android-gradle-plugin:0.9.18"
 
   implementation("com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.4") {
     exclude group: "xerces", module: "xercesImpl"
-  }
-
-  implementation("com.android.tools.build:gradle:3.4.1") {
-    exclude group: "org.jetbrains.kotlin", module: "kotlin-stdlib-jre8"
   }
 
   testImplementation "junit:junit:4.12"

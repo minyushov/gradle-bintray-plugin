@@ -2,6 +2,7 @@ package com.minyushov.bintray
 
 import groovy.lang.Closure
 import org.gradle.api.Project
+import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.Property
 
 open class BintraySimpleExtension(project: Project) {
@@ -18,5 +19,6 @@ open class BintraySimpleExtension(project: Project) {
   val license: Property<String> = project.objects.property(String::class.java)
   val sources: Property<Boolean> = project.objects.property(Boolean::class.javaObjectType).apply { set(true) }
   val docs: Property<Boolean> = project.objects.property(Boolean::class.javaObjectType).apply { set(true) }
+  val variant: Property<String> = project.objects.property(String::class.java).apply { set("release") }
   var docsSettings: Closure<*>? = null
 }

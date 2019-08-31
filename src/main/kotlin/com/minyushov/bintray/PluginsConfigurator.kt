@@ -1,7 +1,6 @@
 package com.minyushov.bintray
 
 import com.jfrog.bintray.gradle.BintrayPlugin
-import digital.wup.android_maven_publish.AndroidMavenPublishPlugin
 import org.gradle.api.Project
 import org.gradle.api.publish.maven.plugins.MavenPublishPlugin
 import org.jetbrains.dokka.gradle.DokkaAndroidPlugin
@@ -21,9 +20,7 @@ internal class PluginsConfiguratorCommon : PluginsConfigurator {
 }
 
 internal class PluginsConfiguratorAndroid : PluginsConfigurator {
-  override fun configure(project: Project) {
-    project.pluginManager.apply(AndroidMavenPublishPlugin::class.java)
-  }
+  override fun configure(project: Project) = Unit
 }
 
 internal class PluginsConfiguratorKotlin : PluginsConfigurator {
