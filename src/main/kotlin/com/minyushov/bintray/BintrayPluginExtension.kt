@@ -5,7 +5,7 @@ import org.gradle.api.Project
 import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.Property
 
-open class BintraySimpleExtension(project: Project) {
+open class BintrayPluginExtension(project: Project) {
   val dryRun: Property<Boolean> = project.objects.property(Boolean::class.javaObjectType).apply { set(true) }
   val user: Property<String> = project.objects.property(String::class.java)
   val key: Property<String> = project.objects.property(String::class.java)

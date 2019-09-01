@@ -1,4 +1,4 @@
-package com.minyushov.bintray
+package com.minyushov.bintray.artifact
 
 import org.gradle.api.InvalidUserDataException
 import org.gradle.api.artifacts.PublishArtifact
@@ -6,8 +6,6 @@ import org.gradle.api.file.FileSystemLocation
 import org.gradle.api.internal.artifacts.dsl.ArtifactFile
 import org.gradle.api.internal.artifacts.publish.ArchivePublishArtifact
 import org.gradle.api.internal.artifacts.publish.DefaultPublishArtifact
-import org.gradle.api.internal.provider.ProviderInternal
-import org.gradle.api.internal.provider.Providers
 import org.gradle.api.internal.tasks.AbstractTaskDependency
 import org.gradle.api.internal.tasks.TaskDependencyResolveContext
 import org.gradle.api.provider.Provider
