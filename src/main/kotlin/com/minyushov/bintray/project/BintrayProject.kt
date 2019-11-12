@@ -155,7 +155,7 @@ internal fun Project.createBintrayProject(extension: BintrayPluginExtension): Bi
       manager.hasPlugin("com.android.library") && manager.hasPlugin("kotlin-android") -> AndroidKotlinLibraryProject(this, extension)
       manager.hasPlugin("com.android.library") -> AndroidJavaLibraryProject(this, extension)
       manager.hasPlugin("kotlin") && !manager.hasPlugin("com.android.application") -> KotlinLibraryProject(this, extension)
-      manager.hasPlugin("java-library") || manager.hasPlugin("java") -> JavaLibraryProject(this, extension)
+      manager.hasPlugin("java-library") || manager.hasPlugin("java") || manager.hasPlugin("groovy") -> JavaLibraryProject(this, extension)
       else -> null
     }
   }

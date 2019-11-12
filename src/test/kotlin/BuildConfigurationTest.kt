@@ -72,6 +72,26 @@ class BuildConfigurationTest {
   }
 
   @Test
+  fun testGroovy() {
+    javaClass
+      .getResourceAsStream("groovy.gradle")
+      .copyTo(projectDir.newFile("build.gradle"))
+      .let {
+        GradleRunner
+          .create()
+          .forwardOutput()
+          .withProjectDir(projectDir.root)
+          .withArguments("bintrayUpload")
+          .withDebug(true)
+          .withPluginClasspath()
+          .build()
+      }
+      .apply {
+        assertEquals(TaskOutcome.SUCCESS, task(":bintrayUpload")?.outcome)
+      }
+  }
+
+  @Test
   fun testGradlePlugin() {
     javaClass
       .getResourceAsStream("gradle-plugin.gradle")
