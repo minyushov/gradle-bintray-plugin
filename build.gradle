@@ -10,7 +10,7 @@ buildscript {
 
   dependencies {
     classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
-    classpath "com.minyushov.gradle:bintray:1.3.0-rc01"
+    classpath "com.minyushov.gradle:bintray:1.3.0-rc02"
   }
 }
 
@@ -26,7 +26,7 @@ repositories {
 dependencies {
   implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
 
-  implementation "com.android.tools.build:gradle:3.6.0-beta01"
+  implementation "com.android.tools.build:gradle:3.6.0-beta03"
 
   implementation "org.jetbrains.dokka:dokka-gradle-plugin:0.10.0"
 
