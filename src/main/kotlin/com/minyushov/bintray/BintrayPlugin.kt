@@ -10,13 +10,13 @@ class BintrayPlugin : Plugin<Project> {
       .createBintrayProject(
         project
           .extensions
-          .create(EXTENSION_NAME, BintrayPluginExtension::class.java, project)
+          .create(EXTENSION_NAME, BintrayExtension::class.java, project)
       )
       ?.configure()
       ?: return
   }
 
   companion object {
-    const val EXTENSION_NAME = "bintrayUpload"
+    const val EXTENSION_NAME = "bintray"
   }
 }

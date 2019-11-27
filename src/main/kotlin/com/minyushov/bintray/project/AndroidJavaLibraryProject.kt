@@ -1,11 +1,11 @@
 package com.minyushov.bintray.project
 
-import com.minyushov.bintray.BintrayPluginExtension
+import com.minyushov.bintray.BintrayExtension
 import org.gradle.api.Project
 
 internal class AndroidJavaLibraryProject(
   project: Project,
-  extension: BintrayPluginExtension
+  extension: BintrayExtension
 ) : BintrayProject(
   project,
   extension

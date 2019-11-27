@@ -1,12 +1,12 @@
 package com.minyushov.bintray.project
 
-import com.minyushov.bintray.BintrayPluginExtension
+import com.minyushov.bintray.BintrayExtension
 import org.gradle.api.Project
 import org.jetbrains.dokka.gradle.DokkaPlugin
 
 internal class KotlinLibraryProject(
   project: Project,
-  extension: BintrayPluginExtension
+  extension: BintrayExtension
 ) : BintrayProject(
   project,
   extension

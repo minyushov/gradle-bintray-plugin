@@ -2,7 +2,7 @@ package com.minyushov.bintray.artifact
 
 import com.android.build.gradle.LibraryExtension
 import com.android.build.gradle.internal.tasks.factory.dependsOn
-import com.minyushov.bintray.BintrayPluginExtension
+import com.minyushov.bintray.BintrayExtension
 import groovy.lang.Closure
 import org.gradle.api.GradleException
 import org.gradle.api.Project
@@ -16,7 +16,7 @@ import java.io.File
 
 internal class ArtifactProvider(
   private val project: Project,
-  private val extension: BintrayPluginExtension
+  private val extension: BintrayExtension
 ) {
 
   val javaSources: PublishArtifact

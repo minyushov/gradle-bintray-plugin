@@ -12,7 +12,7 @@ gradlePlugin {
   }
 }
 
-bintrayUpload {
+bintray {
   dryRun = true
   user = "test"
   key = "test"

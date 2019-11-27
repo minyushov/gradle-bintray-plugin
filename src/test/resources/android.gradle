@@ -24,7 +24,7 @@ android {
   }
 }
 
-bintrayUpload {
+bintray {
   dryRun = true
   user = "test"
   key = "test"

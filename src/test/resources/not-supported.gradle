@@ -2,7 +2,7 @@ plugins {
   id 'com.minyushov.bintray' version '2.0-dev'
 }
 
-bintrayUpload {
+bintray {
   dryRun = true
   user = "test"
   key = "test"

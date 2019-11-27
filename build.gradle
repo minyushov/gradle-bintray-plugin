@@ -24,15 +24,12 @@ repositories {
 }
 
 dependencies {
+  implementation "com.squareup.okhttp3:okhttp:4.2.2"
+  implementation "com.squareup.okhttp3:logging-interceptor:4.2.2"
+  implementation "com.squareup.okio:okio:2.4.1"
   implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
-
-  implementation "com.android.tools.build:gradle:3.6.0-beta03"
-
+  implementation "com.android.tools.build:gradle:3.6.0-beta04"
   implementation "org.jetbrains.dokka:dokka-gradle-plugin:0.10.0"
-
-  implementation("com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.4") {
-    exclude group: "xerces", module: "xercesImpl"
-  }
 
   testImplementation "junit:junit:4.12"
 }
