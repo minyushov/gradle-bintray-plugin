@@ -28,10 +28,15 @@ dependencies {
   implementation "com.squareup.okhttp3:logging-interceptor:4.2.2"
   implementation "com.squareup.okio:okio:2.4.1"
   implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
-  implementation "com.android.tools.build:gradle:3.6.0-beta04"
+  implementation "com.android.tools.build:gradle:3.6.0-beta05"
   implementation "org.jetbrains.dokka:dokka-gradle-plugin:0.10.0"
 
-  testImplementation "junit:junit:4.12"
+  testImplementation "org.junit.jupiter:junit-jupiter-api:5.5.2"
+  testImplementation "org.junit.jupiter:junit-jupiter-engine:5.5.2"
+}
+
+tasks.test {
+  useJUnitPlatform()
 }
 
 tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {

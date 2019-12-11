@@ -202,7 +202,7 @@ open class BintrayUploadTask : DefaultTask() {
     logger.lifecycle("Creating version '${version.name}' at '$path'")
 
     if (dryRun.get()) {
-      logger.info("[dryRun] Created version '${version.name}' at '$path'")
+      logger.lifecycle("[dryRun] Created version '${version.name}' at '$path'")
       return
     }
 
