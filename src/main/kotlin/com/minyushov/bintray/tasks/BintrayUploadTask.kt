@@ -61,10 +61,11 @@ open class BintrayUploadTask : DefaultTask() {
   fun execute() {
     val organization = this.organization.getOrElse(project.localProperty("bintray.organization").orEmpty())
     val user = this.user.getOrElse(project.localProperty("bintray.user").orEmpty())
-    val subject = if (organization.isNullOrEmpty()) user else organization
-    if (subject.isNullOrEmpty()) {
-      throw GradleException("Bintray user/organization is missing")
+    if (user.isNullOrEmpty()) {
+      throw GradleException("Bintray user is missing")
     }
+
+    val subject = if (organization.isNullOrEmpty()) user else organization
 
     val key = this.key.getOrElse(project.localProperty("bintray.key").orEmpty())
     if (key.isNullOrEmpty()) {
@@ -86,7 +87,7 @@ open class BintrayUploadTask : DefaultTask() {
       name = this.version.get()
     )
 
-    val client = createHttpClient(authToken = "Basic ${"$subject:$key".encodeUtf8().base64()}")
+    val client = createHttpClient(authToken = "Basic ${"$user:$key".encodeUtf8().base64()}")
 
     createRepository(client, repository)
     createPackage(client, repository, pkg)
