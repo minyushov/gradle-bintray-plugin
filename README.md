@@ -15,7 +15,7 @@ Please apply the plugin after `com.android.library`, `kotlin-android`, `kotlin`,
 
 ### Configuring the plugin
 ```groovy
-bintrayUpload {
+bintray {
   user = "user" // Your Bintray username. Required
   organization = "org" // Organization name. If not set will use `user` by default.
   key = "key" // Your Bintray API Key. Required
