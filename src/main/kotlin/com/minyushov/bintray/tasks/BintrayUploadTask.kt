@@ -20,6 +20,7 @@ import org.gradle.api.tasks.TaskAction
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.property
 import java.io.File
+import java.util.concurrent.TimeUnit
 
 private const val API_URL = "https://api.bintray.com"
 
@@ -267,6 +268,9 @@ open class BintrayUploadTask : DefaultTask() {
   private fun createHttpClient(authToken: String): OkHttpClient =
     OkHttpClient
       .Builder()
+      .connectTimeout(30, TimeUnit.SECONDS)
+      .readTimeout(30, TimeUnit.SECONDS)
+      .writeTimeout(30, TimeUnit.SECONDS)
       .addInterceptor(
         HttpLoggingInterceptor(
           object : HttpLoggingInterceptor.Logger {
