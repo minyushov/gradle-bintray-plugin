@@ -12,6 +12,10 @@ import org.gradle.api.internal.artifacts.dsl.LazyPublishArtifact
 import org.gradle.api.plugins.JavaPluginConvention
 import org.gradle.api.tasks.bundling.Jar
 import org.gradle.api.tasks.javadoc.Javadoc
+import org.gradle.kotlin.dsl.getByType
+import org.gradle.kotlin.dsl.getPlugin
+import org.gradle.kotlin.dsl.named
+import org.gradle.kotlin.dsl.register
 import org.jetbrains.dokka.gradle.DokkaTask
 import java.io.File
 
@@ -22,16 +26,13 @@ internal class ArtifactProvider(
 
   val javaSources: PublishArtifact
     get() {
-      val javaPlugin = project.convention.getPlugin(JavaPluginConvention::class.java)
-        ?: throw GradleException("Unable to find JavaPluginConvention")
-
+      val javaPlugin = project.convention.getPlugin<JavaPluginConvention>()
       val sourceSet = javaPlugin.sourceSets.getByName("main")
-        ?: throw GradleException("Unable to find main source set")
 
       val classesTask = project.tasks.named("classes")
-      val sourcesJarTask = project.tasks.register("sourcesJar", Jar::class.java) { task ->
-        task.archiveClassifier.set("sources")
-        task.from(sourceSet.allSource)
+      val sourcesJarTask = project.tasks.register<Jar>("sourcesJar") {
+        archiveClassifier.set("sources")
+        from(sourceSet.allSource)
       }
 
       sourcesJarTask.dependsOn(classesTask)
@@ -40,15 +41,13 @@ internal class ArtifactProvider(
 
   val androidSources: PublishArtifact
     get() {
-      val android = project.extensions.getByType(LibraryExtension::class.java)
-        ?: throw GradleException("Unable to find 'android' extension")
-
+      val android = project.extensions.getByType<LibraryExtension>()
       val sourceSet = android.sourceSets.findByName("main")
         ?: throw GradleException("Unable to find 'main' source set")
 
-      val sourcesJarTask = project.tasks.register("sourcesJar", Jar::class.java) { task ->
-        task.archiveClassifier.set("sources")
-        task.from(sourceSet.java.srcDirs)
+      val sourcesJarTask = project.tasks.register<Jar>("sourcesJar") {
+        archiveClassifier.set("sources")
+        from(sourceSet.java.srcDirs)
       }
 
       return LazyPublishArtifact(sourcesJarTask)
@@ -56,13 +55,13 @@ internal class ArtifactProvider(
 
   val javadoc: PublishArtifact
     get() {
-      val javadocTask = project.tasks.named("javadoc", Javadoc::class.java) { task ->
-        task.applyClosure(extension.docsSettings)
+      val javadocTask = project.tasks.named<Javadoc>("javadoc") {
+        applyClosure(extension.docsSettings)
       }
 
-      val javadocJarTask = project.tasks.register("javadocJar", Jar::class.java) { task ->
-        task.archiveClassifier.set("javadoc")
-        task.from(javadocTask.get().destinationDir)
+      val javadocJarTask = project.tasks.register<Jar>("javadocJar") {
+        archiveClassifier.set("javadoc")
+        from(javadocTask.get().destinationDir)
       }
 
       javadocJarTask.dependsOn(javadocTask)
@@ -72,28 +71,27 @@ internal class ArtifactProvider(
 
   val javadocAndroid: PublishArtifact
     get() {
-      val android = project.extensions.getByType(LibraryExtension::class.java)
-        ?: throw GradleException("Unable to find 'android' extension")
+      val android = project.extensions.getByType<LibraryExtension>()
 
       val sourceSet = android.sourceSets.findByName("main")
         ?: throw GradleException("Unable to find 'main' source set")
 
-      val javadocsTask = project.tasks.register("androidJavadocs", Javadoc::class.java) { task ->
-        task.source(sourceSet.java.sourceFiles)
+      val javadocsTask = project.tasks.register<Javadoc>("androidJavadocs") {
+        source(sourceSet.java.sourceFiles)
 
-        task.classpath += project.files(android.bootClasspath.joinToString(File.pathSeparator))
+        classpath += project.files(android.bootClasspath.joinToString(File.pathSeparator))
 
         val variant = android.libraryVariants.find { it.name == "release" }
         if (variant != null) {
-          task.classpath += variant.javaCompileProvider.get().classpath
+          classpath += variant.javaCompileProvider.get().classpath
         }
 
-        task.applyClosure(extension.docsSettings)
+        applyClosure(extension.docsSettings)
       }
 
-      val javadocJarTask = project.tasks.register("javadocJar", Jar::class.java) { task ->
-        task.archiveClassifier.set("javadoc")
-        task.from(javadocsTask.get().destinationDir)
+      val javadocJarTask = project.tasks.register<Jar>("javadocJar") {
+        archiveClassifier.set("javadoc")
+        from(javadocsTask.get().destinationDir)
       }
 
       javadocJarTask.dependsOn(javadocsTask)
@@ -103,14 +101,14 @@ internal class ArtifactProvider(
 
   val dokka: PublishArtifact
     get() {
-      val dokkaTask = project.tasks.named("dokka", DokkaTask::class.java) { task ->
-        task.outputFormat = "javadoc"
-        task.applyClosure(extension.docsSettings)
+      val dokkaTask = project.tasks.named<DokkaTask>("dokka") {
+        outputFormat = "javadoc"
+        applyClosure(extension.docsSettings)
       }
 
-      val javadocJarTask = project.tasks.register("javadocJar", Jar::class.java) { task ->
-        task.archiveClassifier.set("javadoc")
-        task.from(dokkaTask.get().outputDirectory)
+      val javadocJarTask = project.tasks.register<Jar>("javadocJar") {
+        archiveClassifier.set("javadoc")
+        from(dokkaTask.get().outputDirectory)
       }
 
       javadocJarTask.dependsOn(dokkaTask)

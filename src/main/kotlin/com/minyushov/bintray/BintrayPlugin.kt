@@ -3,6 +3,7 @@ package com.minyushov.bintray
 import com.minyushov.bintray.project.createBintrayProject
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.kotlin.dsl.create
 
 class BintrayPlugin : Plugin<Project> {
   override fun apply(project: Project) {
@@ -10,7 +11,7 @@ class BintrayPlugin : Plugin<Project> {
       .createBintrayProject(
         project
           .extensions
-          .create(EXTENSION_NAME, BintrayExtension::class.java, project)
+          .create(EXTENSION_NAME, BintrayExtension::class, project)
       )
       ?.configure()
       ?: return

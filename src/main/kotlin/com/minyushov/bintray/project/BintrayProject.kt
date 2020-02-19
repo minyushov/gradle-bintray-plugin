@@ -1,8 +1,8 @@
 package com.minyushov.bintray.project
 
 import com.android.build.gradle.internal.tasks.factory.dependsOn
-import com.minyushov.bintray.BintrayPlugin
 import com.minyushov.bintray.BintrayExtension
+import com.minyushov.bintray.BintrayPlugin
 import com.minyushov.bintray.artifact.ArtifactProvider
 import com.minyushov.bintray.artifact.ComponentProvider
 import com.minyushov.bintray.tasks.BintrayUploadTask
@@ -12,6 +12,10 @@ import org.gradle.api.component.SoftwareComponent
 import org.gradle.api.publish.PublishingExtension
 import org.gradle.api.publish.maven.MavenPublication
 import org.gradle.api.publish.maven.plugins.MavenPublishPlugin
+import org.gradle.kotlin.dsl.apply
+import org.gradle.kotlin.dsl.configure
+import org.gradle.kotlin.dsl.maybeCreate
+import org.gradle.kotlin.dsl.register
 
 internal abstract class BintrayProject(
   protected val project: Project,
@@ -28,8 +32,8 @@ internal abstract class BintrayProject(
     applyPlugins()
 
     project.afterEvaluate {
-      project.extensions.configure(PublishingExtension::class.java) { publishing ->
-        val publication = publishing.publications.maybeCreate("maven", MavenPublication::class.java)
+      extensions.configure<PublishingExtension> {
+        val publication = publications.maybeCreate("maven", MavenPublication::class)
 
         val version = checkNotNull(extension.version.orNull) { "Bintray library version is not defined in '${BintrayPlugin.EXTENSION_NAME}' extension" }
         project.setProperty("version", version)
@@ -43,26 +47,26 @@ internal abstract class BintrayProject(
         project.setProperty("archivesBaseName", artifactId)
         publication.artifactId = artifactId
 
-        components.forEach { publication.from(it) }
-        artifacts.forEach { publication.artifact(it) }
+        this@BintrayProject.components.forEach { publication.from(it) }
+        this@BintrayProject.artifacts.forEach { publication.artifact(it) }
       }
 
-      project.tasks.register("bintrayUpload", BintrayUploadTask::class.java) { task ->
-        task.user.set(extension.user)
-        task.organization.set(extension.organization)
-        task.key.set(extension.key)
-        task.repository.set(extension.repo)
-        task.packageName.set(extension.pkgName)
-        task.artifactId.set(extension.artifactId)
-        task.license.set(extension.license)
-        task.vcsUrl.set(extension.vcsUrl)
-        task.version.set(extension.version)
-        task.dryRun.set(extension.dryRun)
+      project.tasks.register<BintrayUploadTask>("bintrayUpload") {
+        user.set(extension.user)
+        organization.set(extension.organization)
+        key.set(extension.key)
+        repository.set(extension.repo)
+        packageName.set(extension.pkgName)
+        artifactId.set(extension.artifactId)
+        license.set(extension.license)
+        vcsUrl.set(extension.vcsUrl)
+        version.set(extension.version)
+        dryRun.set(extension.dryRun)
       }
 
-      project.extensions.configure(PublishingExtension::class.java) { publishing ->
+      project.extensions.configure<PublishingExtension> {
         val uploadDevTask = project.tasks.named("bintrayUpload")
-        publishing.publications.forEach { publication ->
+        publications.forEach { publication ->
           uploadDevTask.dependsOn("publish${publication.name.capitalize()}PublicationToMavenLocal")
         }
       }
@@ -71,7 +75,7 @@ internal abstract class BintrayProject(
 
   protected open fun applyPlugins() {
     project.pluginManager.apply {
-      apply(MavenPublishPlugin::class.java)
+      apply(MavenPublishPlugin::class)
     }
   }
 

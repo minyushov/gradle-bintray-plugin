@@ -6,17 +6,22 @@ buildscript {
   repositories {
     jcenter()
     google()
+    gradlePluginPortal()
   }
 
   dependencies {
+    classpath "org.gradle.kotlin:plugins:1.3.3"
     classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
-    classpath "com.minyushov.gradle:bintray:2.0.0-alpha04"
+    classpath "com.minyushov.gradle:bintray:2.0.0-alpha05"
   }
 }
 
 apply plugin: 'java-gradle-plugin'
-apply plugin: 'kotlin'
+apply plugin: 'org.gradle.kotlin.kotlin-dsl'
 apply plugin: 'com.minyushov.bintray'
+
+group = 'com.minyushov.gradle'
+version = '2.0-dev'
 
 repositories {
   jcenter()
@@ -47,11 +52,13 @@ java {
 tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
   kotlinOptions {
     jvmTarget = "1.8"
+    freeCompilerArgs += ["-XXLanguage:+NewInference"]
   }
 }
 
-group = 'com.minyushov.gradle'
-version = '2.0-dev'
+kotlinDslPluginOptions {
+  experimentalWarning.set(false)
+}
 
 gradlePlugin {
   plugins {
@@ -67,7 +74,7 @@ bintray {
   repo = "gradle"
   groupId = "com.minyushov.gradle"
   artifactId = "bintray"
-  version = "2.0.0-alpha04"
+  version = "2.0.0-alpha05"
   vcsUrl = "https://github.com/minyushov/gradle-bintray-plugin.git"
   license = "Apache-2.0"
   docs = false

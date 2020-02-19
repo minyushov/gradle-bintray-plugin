@@ -17,6 +17,8 @@ import org.gradle.api.publish.maven.internal.publication.DefaultMavenPublication
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.Optional
 import org.gradle.api.tasks.TaskAction
+import org.gradle.kotlin.dsl.configure
+import org.gradle.kotlin.dsl.property
 import java.io.File
 
 private const val API_URL = "https://api.bintray.com"
@@ -25,34 +27,34 @@ open class BintrayUploadTask : DefaultTask() {
 
   @get:Input
   @get:Optional
-  val user: Property<String> = project.objects.property(String::class.java)
+  val user: Property<String> = project.objects.property(String::class)
 
   @get:Input
   @get:Optional
-  val organization: Property<String> = project.objects.property(String::class.java)
+  val organization: Property<String> = project.objects.property(String::class)
 
   @get:Input
   @get:Optional
-  val key: Property<String> = project.objects.property(String::class.java)
+  val key: Property<String> = project.objects.property(String::class)
 
   @get:Input
-  val repository: Property<String> = project.objects.property(String::class.java)
+  val repository: Property<String> = project.objects.property(String::class)
 
   @get:Input
   @get:Optional
-  val packageName: Property<String> = project.objects.property(String::class.java)
+  val packageName: Property<String> = project.objects.property(String::class)
 
   @get:Input
-  val artifactId: Property<String> = project.objects.property(String::class.java)
+  val artifactId: Property<String> = project.objects.property(String::class)
 
   @get:Input
-  val license: Property<String> = project.objects.property(String::class.java)
+  val license: Property<String> = project.objects.property(String::class)
 
   @get:Input
-  val vcsUrl: Property<String> = project.objects.property(String::class.java)
+  val vcsUrl: Property<String> = project.objects.property(String::class)
 
   @get:Input
-  val version: Property<String> = project.objects.property(String::class.java)
+  val version: Property<String> = project.objects.property(String::class)
 
   @get:Input
   val dryRun: Property<Boolean> = project.objects.property(Boolean::class.javaObjectType)
@@ -61,14 +63,14 @@ open class BintrayUploadTask : DefaultTask() {
   fun execute() {
     val organization = this.organization.getOrElse(project.localProperty("bintray.organization").orEmpty())
     val user = this.user.getOrElse(project.localProperty("bintray.user").orEmpty())
-    if (user.isNullOrEmpty()) {
+    if (user.isEmpty()) {
       throw GradleException("Bintray user is missing")
     }
 
-    val subject = if (organization.isNullOrEmpty()) user else organization
+    val subject = if (organization.isEmpty()) user else organization
 
     val key = this.key.getOrElse(project.localProperty("bintray.key").orEmpty())
-    if (key.isNullOrEmpty()) {
+    if (key.isEmpty()) {
       throw GradleException("Bintray key is missing")
     }
 
@@ -93,9 +95,8 @@ open class BintrayUploadTask : DefaultTask() {
     createPackage(client, repository, pkg)
     createVersion(client, repository, pkg, version)
 
-    project.extensions.configure(PublishingExtension::class.java) { publishing ->
-      publishing
-        .publications
+    project.extensions.configure<PublishingExtension> {
+      publications
         .mapNotNull { publication ->
           if (publication !is DefaultMavenPublication) {
             logger.warn("Publication '${publication.name}' is skipped. Only maven publications are supported")

@@ -2,6 +2,7 @@ package com.minyushov.bintray.project
 
 import com.minyushov.bintray.BintrayExtension
 import org.gradle.api.Project
+import org.gradle.kotlin.dsl.apply
 import org.jetbrains.dokka.gradle.DokkaPlugin
 
 internal class AndroidKotlinLibraryProject(
@@ -14,7 +15,7 @@ internal class AndroidKotlinLibraryProject(
 
   override fun applyPlugins() {
     super.applyPlugins()
-    project.pluginManager.apply(DokkaPlugin::class.java)
+    project.pluginManager.apply(DokkaPlugin::class)
   }
 
   override val components

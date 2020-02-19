@@ -1,3 +1,5 @@
+package com.minyushov.bintray
+
 import org.gradle.testkit.runner.GradleRunner
 import org.gradle.testkit.runner.TaskOutcome
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -183,7 +185,7 @@ class ProjectsTest {
           resolutionStrategy {
             eachPlugin {
               if (requested.id.id == "com.android.library") {
-                useModule("com.android.tools.build:gradle:3.6.0-beta05")
+                useModule("com.android.tools.build:gradle:4.0.0-alpha09")
               }
             }
           }
