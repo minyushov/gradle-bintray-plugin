@@ -185,7 +185,7 @@ class ProjectsTest {
           resolutionStrategy {
             eachPlugin {
               if (requested.id.id == "com.android.library") {
-                useModule("com.android.tools.build:gradle:4.0.0-alpha09")
+                useModule("com.android.tools.build:gradle:4.0.0")
               }
             }
           }
