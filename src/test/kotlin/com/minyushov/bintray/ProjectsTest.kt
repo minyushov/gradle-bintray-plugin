@@ -5,6 +5,8 @@ import org.gradle.testkit.runner.TaskOutcome
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.ValueSource
 import java.io.File
 
 private const val PLUGIN_ID = "com.minyushov.bintray"
@@ -161,8 +163,9 @@ class ProjectsTest {
       }
   }
 
-  @Test
-  fun testAndroid() {
+  @ParameterizedTest
+  @ValueSource(strings = ["4.1.0", "4.2.0-alpha13"])
+  fun testAndroid(agpVersion: String) {
     projectDir.create("src/main/AndroidManifest.xml") {
       """
         <manifest package="com.test"/>
@@ -185,7 +188,7 @@ class ProjectsTest {
           resolutionStrategy {
             eachPlugin {
               if (requested.id.id == "com.android.library") {
-                useModule("com.android.tools.build:gradle:4.0.0")
+                useModule("com.android.tools.build:gradle:$agpVersion")
               }
             }
           }
@@ -213,11 +216,11 @@ class ProjectsTest {
         }
 
         android {
-          compileSdkVersion 29
+          compileSdkVersion 30
 
           defaultConfig {
             minSdkVersion 21
-            targetSdkVersion 29
+            targetSdkVersion 30
           }
         }
 

@@ -77,7 +77,7 @@ internal class ArtifactProvider(
         ?: throw GradleException("Unable to find 'main' source set")
 
       val javadocsTask = project.tasks.register<Javadoc>("androidJavadocs") {
-        source(sourceSet.java.sourceFiles)
+        source(sourceSet.java.getSourceFiles())
 
         classpath += project.files(android.bootClasspath.joinToString(File.pathSeparator))
 
