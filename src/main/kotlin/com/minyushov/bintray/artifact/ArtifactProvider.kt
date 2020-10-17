@@ -61,7 +61,7 @@ internal class ArtifactProvider(
 
       val javadocJarTask = project.tasks.register<Jar>("javadocJar") {
         archiveClassifier.set("javadoc")
-        from(javadocTask.get().destinationDir)
+        from(javadocTask.map { it.destinationDir!! })
       }
 
       javadocJarTask.dependsOn(javadocTask)
@@ -91,7 +91,7 @@ internal class ArtifactProvider(
 
       val javadocJarTask = project.tasks.register<Jar>("javadocJar") {
         archiveClassifier.set("javadoc")
-        from(javadocsTask.get().destinationDir)
+        from(javadocsTask.map { it.destinationDir!! })
       }
 
       javadocJarTask.dependsOn(javadocsTask)
@@ -101,14 +101,13 @@ internal class ArtifactProvider(
 
   val dokka: PublishArtifact
     get() {
-      val dokkaTask = project.tasks.named<DokkaTask>("dokka") {
-        outputFormat = "javadoc"
+      val dokkaTask = project.tasks.named<DokkaTask>("dokkaJavadoc") {
         applyClosure(extension.docsSettings)
       }
 
       val javadocJarTask = project.tasks.register<Jar>("javadocJar") {
         archiveClassifier.set("javadoc")
-        from(dokkaTask.get().outputDirectory)
+        from(dokkaTask.map { it.outputDirectory })
       }
 
       javadocJarTask.dependsOn(dokkaTask)
