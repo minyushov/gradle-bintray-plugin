@@ -10,7 +10,7 @@ import org.junit.jupiter.params.provider.ValueSource
 import java.io.File
 
 private const val PLUGIN_ID = "com.minyushov.bintray"
-private const val PLUGIN_VERSION = "2.0-dev"
+private const val PLUGIN_VERSION = "2.1-dev"
 private val PLUGIN_EXTENSION =
   """
     |bintray {
@@ -164,7 +164,7 @@ class ProjectsTest {
   }
 
   @ParameterizedTest
-  @ValueSource(strings = ["4.1.0", "4.2.0-alpha13"])
+  @ValueSource(strings = ["4.1.2", "4.2.0-beta03", "7.0.0-alpha04"])
   fun testAndroid(agpVersion: String) {
     projectDir.create("src/main/AndroidManifest.xml") {
       """

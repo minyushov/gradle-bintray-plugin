@@ -6,8 +6,8 @@ buildscript {
   }
 
   dependencies {
-    classpath "org.gradle.kotlin:gradle-kotlin-dsl-plugins:1.4.2"
-    classpath "com.minyushov.gradle:bintray:2.0.0"
+    classpath "org.gradle.kotlin:gradle-kotlin-dsl-plugins:1.4.9"
+    classpath "com.minyushov.gradle:bintray:2.1.0-rc01"
   }
 }
 
@@ -16,7 +16,7 @@ apply plugin: 'org.gradle.kotlin.kotlin-dsl'
 apply plugin: 'com.minyushov.bintray'
 
 group = 'com.minyushov.gradle'
-version = '2.0-dev'
+version = '2.1-dev'
 
 repositories {
   jcenter()
@@ -26,9 +26,9 @@ repositories {
 dependencies {
   implementation "com.squareup.okhttp3:okhttp:4.9.0"
   implementation "com.squareup.okhttp3:logging-interceptor:4.9.0"
-  implementation "com.squareup.okio:okio:2.9.0"
-  implementation "com.android.tools.build:gradle:4.1.0"
-  implementation "org.jetbrains.dokka:dokka-gradle-plugin:1.4.10"
+  implementation "com.squareup.okio:okio:2.10.0"
+  implementation "com.android.tools.build:gradle:4.1.2"
+  implementation "org.jetbrains.dokka:dokka-gradle-plugin:1.4.20"
 
   testImplementation "org.junit.jupiter:junit-jupiter-api:5.7.0"
   testImplementation "org.junit.jupiter:junit-jupiter-engine:5.7.0"
@@ -68,7 +68,7 @@ bintray {
   repo = "gradle"
   groupId = "com.minyushov.gradle"
   artifactId = "bintray"
-  version = "2.1.0-rc01"
+  version = "2.1.0-rc02"
   vcsUrl = "https://github.com/minyushov/gradle-bintray-plugin.git"
   license = "Apache-2.0"
   docs = false
